@@ -49,3 +49,23 @@ func get_simplified_device_name(raw_name: String) -> String:
 		
 		_:
 			return DEVICE_GENERIC
+
+
+func get_key_label(action_name: String) -> String:
+	var inputs = InputMap.get_action_list(action_name)
+	# Get the first key input
+	for input in inputs:
+		if input is InputEventKey:
+			return input.as_text()
+	
+	return ""
+
+
+func get_button_index(action_name: String) -> int:
+	var inputs = InputMap.get_action_list(action_name)
+	# Get the first button input
+	for input in inputs:
+		if input is InputEventJoypadButton:
+			return input.button_index
+	
+	return -1

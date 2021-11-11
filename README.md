@@ -27,6 +27,16 @@ func _on_input_device_changed(device: String, device_index: int) -> void:
     print("Device index? ", device_index) # Probably 0
 ```
 
+There are also a couple of convencience methods to try and guess the key or button attached to an action:
+
+```
+# Get the key name of the first key-based input for the `ui_accept` action
+InputHelper.get_key_label("ui_accept")
+
+# Get the button index of the first gamepad-based input for the `ui_accept` action
+InputHelper.get_button_index("ui_accept")
+```
+
 ## Contributors
 
 [Nathan Hoad](https://nathanhoad.net)
