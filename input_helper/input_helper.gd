@@ -69,3 +69,10 @@ func get_button_index(action_name: String) -> int:
 			return input.button_index
 	
 	return -1
+
+func guess_controller() -> String:
+	var connected_joypads = Input.get_connected_joypads()
+	if connected_joypads.size() == 0:
+		return DEVICE_KEYBOARD
+	else:
+		return get_simplified_device_name(Input.get_joy_name(0))
