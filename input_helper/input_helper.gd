@@ -26,7 +26,7 @@ func _input(event: InputEvent) -> void:
 	
 	# Did we just use a gamepad?
 	elif (event is InputEventJoypadButton and event.is_pressed()) \
-		or (event is InputEventJoypadMotion and int(event.axis_value * 10) != 0):
+		or (event is InputEventJoypadMotion and event.axis_value > 0.1):
 		next_device = get_simplified_device_name(Input.get_joy_name(event.device))
 		next_device_index = event.device
 
@@ -70,9 +70,38 @@ func get_button_index(action_name: String) -> int:
 	
 	return -1
 
-func guess_controller() -> String:
+
+func guess_device_name() -> String:
 	var connected_joypads = Input.get_connected_joypads()
 	if connected_joypads.size() == 0:
 		return DEVICE_KEYBOARD
 	else:
 		return get_simplified_device_name(Input.get_joy_name(0))
+
+
+func rumble_small(device: int = 0) -> void:
+	Input.start_joy_vibration(device, 0.4, 0, 0.1)
+
+
+func rumble_medium(device: int = 0) -> void:
+	Input.start_joy_vibration(device, 0, 0.7, 0.1)
+
+
+func rumble_large(device: int = 0) -> void:
+	Input.start_joy_vibration(device, 0, 1, 0.1)
+
+
+func start_rumble_small(device: int = 0) -> void:
+	Input.start_joy_vibration(device, 0.4, 0, 0)
+
+
+func start_rumble_medium(device: int = 0) -> void:
+	Input.start_joy_vibration(device, 0, 0.7, 0)
+
+
+func start_rumble_large(device: int = 0) -> void:
+	Input.start_joy_vibration(device, 0, 1, 0)
+
+
+func stop_rumble(device: int = 0) -> void:
+	Input.stop_joy_vibration(device)
