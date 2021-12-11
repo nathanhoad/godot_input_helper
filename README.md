@@ -1,4 +1,4 @@
-![SayWhat logo](logo.svg)
+![Logo](logo.svg)
 
 # Godot Input Helper
 
@@ -8,6 +8,7 @@ Features:
 
 - Detects what input device the player is using
 - Can tell the difference between a few different gamepads
+- Rumble a gamepad
 
 ## Usage
 
@@ -67,6 +68,11 @@ InputHelper.start_rumble_large(device: int = 0)
 # Stop any shaking
 InputHelper.stop_rumble(device: int = 0)
 ```
+
+## More information
+
+[![Watch a video about my input helper addon](video.jpg)](https://youtu.be/Ol95TwAuARs)  
+_YouTube: Detecting input devices in Godot._
 
 ## Contributors
 
