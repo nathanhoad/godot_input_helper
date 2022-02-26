@@ -38,10 +38,10 @@ func _input(event: InputEvent) -> void:
 
 func get_simplified_device_name(raw_name: String) -> String:
 	match raw_name:
-		"XInput Gamepad", "Xbox Series Controller", "Xbox 360 Wireless Receiver":
+		"XInput Gamepad", "Xbox Series Controller":
 			return DEVICE_XBOX_CONTROLLER
 		
-		"PS5 Controller", "PS4 Controller", "PS3 Controller", "PS2 Controller":
+		"PS5 Controller", "PS4 Controller":
 			return DEVICE_PLAYSTATION_CONTROLLER
 		
 		"Switch":

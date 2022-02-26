@@ -10,11 +10,13 @@ Features:
 - Can tell the difference between a few different gamepads
 - Rumble a gamepad
 
-## Usage
+## Install
 
-Copy the `input_helper` directory into your `res://addons/` directory.
+Copy the `addons/input_helper` directory into your `res://addons/input_helper` directory.
 
 Enable `InputHelper` in project plugins.
+
+## Usage
 
 Connect your input indicators to the `device_changed` signal to be notified when the player uses a new input device. For example:
 
@@ -68,6 +70,10 @@ InputHelper.start_rumble_large(device: int = 0)
 # Stop any shaking
 InputHelper.stop_rumble(device: int = 0)
 ```
+
+## Device Tester
+
+Run the `res://addons/input_helper/device_tester/device_tester.tscn` scene to test inputs.
 
 ## More information
 
