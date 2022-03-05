@@ -1,0 +1,33 @@
+# Detecting devices
+
+Connect your input indicators to the `device_changed` signal to be notified when the player uses a new input device. For example:
+
+```gdscript
+func _ready() -> void:
+    InputHelper.connect("device_changed", self, "_on_input_device_changed")
+
+
+func _on_input_device_changed(device: String, device_index: int) -> void:
+    print("XBox? ", device == InputHelper.DEVICE_XBOX_CONTROLLER)
+    print("Device index? ", device_index) # Probably 0
+```
+
+You can also try to guess the controller before any input is registered (thanks [@_was](https://github.com/was-games)):
+
+```gdscript
+InputHelper.guess_device_name() # Maybe "xbox" if you have an XBox controller plugged in
+```
+
+There are a couple of convencience methods to try and guess the key or button attached to an action:
+
+```gdscript
+# Get the key name of the first key-based input for the `ui_accept` action
+InputHelper.get_key_label("ui_accept")
+
+# Get the button index of the first gamepad-based input for the `ui_accept` action
+InputHelper.get_button_index("ui_accept")
+```
+
+## Device Tester
+
+Run the `res://addons/input_helper/device_tester/device_tester.tscn` scene to test inputs.
