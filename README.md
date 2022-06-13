@@ -8,6 +8,7 @@ Features:
 
 - Detects what input device the player is using
 - Can tell the difference between a few different gamepads
+- Can get and set input action buttons and keys
 - Rumble a gamepad
 
 ## Installation
@@ -18,12 +19,13 @@ Enable `InputHelper` in project plugins.
 
 ## Documentation
 
-- [Detecting devices](docs/Devices.md)
+- [Detecting Devices](docs/Devices.md)
+- [Input Mapping](docs/Mapping.md)
 - [Rumbling](docs/Rumbling.md)
 
 ## Discord
 
-[![Join the Discord](docs/discord.png)](https://discord.gg/zwBVQdJchX)
+[![Join the Discord](docs/discord.svg)](https://discord.gg/zwBVQdJchX)
 
 ## More information
 

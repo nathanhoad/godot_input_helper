@@ -1,4 +1,4 @@
-# Detecting devices
+# Detecting Devices
 
 Connect your input indicators to the `device_changed` signal to be notified when the player uses a new input device. For example:
 
@@ -18,15 +18,7 @@ You can also try to guess the controller before any input is registered (thanks 
 InputHelper.guess_device_name() # Maybe "xbox" if you have an XBox controller plugged in
 ```
 
-There are a couple of convencience methods to try and guess the key or button attached to an action:
-
-```gdscript
-# Get the key name of the first key-based input for the `ui_accept` action
-InputHelper.get_key_label("ui_accept")
-
-# Get the button index of the first gamepad-based input for the `ui_accept` action
-InputHelper.get_button_index("ui_accept")
-```
+To remap input, have a look at [Input Mapping](./Mapping.md).
 
 ## Device Tester
 
