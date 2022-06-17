@@ -29,8 +29,8 @@ Enable `InputHelper` in project plugins.
 
 ## More information
 
-[![Watch a video about my input helper addon](docs/video.jpg)](https://youtu.be/Ol95TwAuARs)  
-_YouTube: Detecting input devices in Godot._
+[![Watch a video about my input helper addon](docs/detect-input-device.png)](https://youtu.be/Ol95TwAuARs)
+[![Watch a video remapping input](docs/remapping-input.png)](https://youtu.be/KbOW_9zmv3w)
 
 ## Contributors
 
