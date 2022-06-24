@@ -175,29 +175,29 @@ func set_action_button(target_action: String, button: int, swap_if_taken: bool =
 ### Rumbling
 
 
-func rumble_small(device: int = 0) -> void:
-	Input.start_joy_vibration(device, 0.4, 0, 0.1)
+func rumble_small(target_device: int = 0) -> void:
+	Input.start_joy_vibration(target_device, 0.4, 0, 0.1)
 
 
-func rumble_medium(device: int = 0) -> void:
-	Input.start_joy_vibration(device, 0, 0.7, 0.1)
+func rumble_medium(target_device: int = 0) -> void:
+	Input.start_joy_vibration(target_device, 0, 0.7, 0.1)
 
 
-func rumble_large(device: int = 0) -> void:
-	Input.start_joy_vibration(device, 0, 1, 0.1)
+func rumble_large(target_device: int = 0) -> void:
+	Input.start_joy_vibration(target_device, 0, 1, 0.1)
 
 
-func start_rumble_small(device: int = 0) -> void:
-	Input.start_joy_vibration(device, 0.4, 0, 0)
+func start_rumble_small(target_device: int = 0) -> void:
+	Input.start_joy_vibration(target_device, 0.4, 0, 0)
 
 
-func start_rumble_medium(device: int = 0) -> void:
-	Input.start_joy_vibration(device, 0, 0.7, 0)
+func start_rumble_medium(target_device: int = 0) -> void:
+	Input.start_joy_vibration(target_device, 0, 0.7, 0)
 
 
-func start_rumble_large(device: int = 0) -> void:
-	Input.start_joy_vibration(device, 0, 1, 0)
+func start_rumble_large(target_device: int = 0) -> void:
+	Input.start_joy_vibration(target_device, 0, 1, 0)
 
 
-func stop_rumble(device: int = 0) -> void:
-	Input.stop_joy_vibration(device)
+func stop_rumble(target_device: int = 0) -> void:
+	Input.stop_joy_vibration(target_device)
