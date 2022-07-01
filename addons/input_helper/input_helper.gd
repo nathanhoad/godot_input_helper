@@ -48,7 +48,7 @@ func get_simplified_device_name(raw_name: String) -> String:
 		"XInput Gamepad", "Xbox Series Controller":
 			return DEVICE_XBOX_CONTROLLER
 		
-		"PS5 Controller", "PS4 Controller":
+		"Sony DualSense", "PS5 Controller", "PS4 Controller":
 			return DEVICE_PLAYSTATION_CONTROLLER
 		
 		"Switch":
