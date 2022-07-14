@@ -21,3 +21,19 @@ InputHelper provides a few methods for getting and setting actions.
 - `InputHelper.reset_all_actions() -> void`
 
     Resets all actions to the game defaults. This will emit `action_button_changed` or `action_key_changed` signals for each of the actions that were reset.
+
+
+## Getting input for mapping
+
+Somewhere in your user interface you might have a popup that says "press a key or button" when remapping input. There you could have something similar to this for grabbing the next input event to map that action to:
+
+```gdscript
+func _unhandled_input(event) -> void:
+	if event is InputEventKey and event.is_pressed():
+		accept_event()
+		InputHelper.set_action_key(action, event.as_text())
+
+	if event is InputEventJoypadButton and event.is_pressed():
+		accept_event()
+		InputHelper.set_action_button(action, event.button_index)
+```
