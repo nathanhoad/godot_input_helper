@@ -1,9 +1,9 @@
 [gd_scene load_steps=10 format=2]
 
-[ext_resource path="res://addons/input_helper/device_tester/device_tester.gd" type="Script" id=1]
-[ext_resource path="res://addons/input_helper/device_tester/Open_Sans/OpenSans-Regular.ttf" type="DynamicFontData" id=2]
-[ext_resource path="res://addons/input_helper/device_tester/Open_Sans/OpenSans-Bold.ttf" type="DynamicFontData" id=3]
-[ext_resource path="res://addons/input_helper/device_tester/Open_Sans/OpenSans-Italic.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://addons/input_helper/examples/device_tester.gd" type="Script" id=1]
+[ext_resource path="res://addons/input_helper/examples/Open_Sans/OpenSans-Regular.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://addons/input_helper/examples/Open_Sans/OpenSans-Bold.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://addons/input_helper/examples/Open_Sans/OpenSans-Italic.ttf" type="DynamicFontData" id=4]
 
 [sub_resource type="DynamicFont" id=1]
 size = 20
