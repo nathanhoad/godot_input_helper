@@ -4,7 +4,7 @@ Connect your input indicators to the `device_changed` signal to be notified when
 
 ```gdscript
 func _ready() -> void:
-    InputHelper.connect("device_changed", self, "_on_input_device_changed")
+    InputHelper.device_changed.connect(_on_input_device_changed)
 
 
 func _on_input_device_changed(device: String, device_index: int) -> void:

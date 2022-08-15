@@ -1,105 +1,67 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=3 format=3 uid="uid://ceeb8myktefw3"]
 
-[ext_resource path="res://addons/input_helper/examples/device_tester.gd" type="Script" id=1]
-[ext_resource path="res://addons/input_helper/examples/Open_Sans/OpenSans-Regular.ttf" type="DynamicFontData" id=2]
-[ext_resource path="res://addons/input_helper/examples/Open_Sans/OpenSans-Bold.ttf" type="DynamicFontData" id=3]
-[ext_resource path="res://addons/input_helper/examples/Open_Sans/OpenSans-Italic.ttf" type="DynamicFontData" id=4]
+[ext_resource type="Script" path="res://addons/input_helper/examples/device_tester.gd" id="1"]
 
-[sub_resource type="DynamicFont" id=1]
-size = 20
-font_data = ExtResource( 2 )
-
-[sub_resource type="DynamicFont" id=2]
-size = 45
-font_data = ExtResource( 2 )
-
-[sub_resource type="DynamicFont" id=3]
-size = 20
-font_data = ExtResource( 4 )
-
-[sub_resource type="DynamicFont" id=4]
-size = 20
-font_data = ExtResource( 3 )
-
-[sub_resource type="DynamicFont" id=5]
-size = 20
-font_data = ExtResource( 2 )
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aqf2u"]
+content_margin_left = 20.0
+content_margin_top = 10.0
+content_margin_right = 20.0
+content_margin_bottom = 10.0
+bg_color = Color(0, 0, 0, 0.501961)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
 [node name="ControllerTester" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="ColorRect" type="ColorRect" parent="."]
-anchor_right = 1.0
-anchor_bottom = 1.0
-color = Color( 0.2, 0.2, 0.2, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+script = ExtResource("1")
 
 [node name="Margin" type="MarginContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_constants/margin_right = 30
-custom_constants/margin_top = 30
-custom_constants/margin_left = 30
-custom_constants/margin_bottom = 30
-__meta__ = {
-"_edit_use_anchors_": false
-}
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
 
 [node name="VBox" type="HBoxContainer" parent="Margin"]
-margin_left = 30.0
-margin_top = 30.0
-margin_right = 1890.0
-margin_bottom = 1050.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 1260.0
+offset_bottom = 700.0
 
 [node name="Center" type="CenterContainer" parent="Margin/VBox"]
-margin_right = 928.0
-margin_bottom = 1020.0
+offset_right = 618.0
+offset_bottom = 680.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="VBox" type="VBoxContainer" parent="Margin/VBox/Center"]
-margin_left = 363.0
-margin_top = 462.0
-margin_right = 565.0
-margin_bottom = 557.0
+offset_left = 243.0
+offset_top = 312.0
+offset_right = 375.0
+offset_bottom = 368.0
 
 [node name="Label" type="Label" parent="Margin/VBox/Center/VBox"]
-margin_right = 202.0
-margin_bottom = 28.0
-custom_colors/font_color = Color( 0.8, 0.8, 0.8, 1 )
-custom_fonts/font = SubResource( 1 )
+offset_right = 132.0
+offset_bottom = 26.0
 text = "CURRENT DEVICE"
-align = 1
 
 [node name="CurrentDevice" type="Label" parent="Margin/VBox/Center/VBox"]
-margin_top = 32.0
-margin_right = 202.0
-margin_bottom = 95.0
-custom_fonts/font = SubResource( 2 )
+offset_top = 30.0
+offset_right = 132.0
+offset_bottom = 56.0
 text = "Keyboard"
-align = 1
 
 [node name="Logger" type="RichTextLabel" parent="Margin/VBox"]
-margin_left = 932.0
-margin_right = 1860.0
-margin_bottom = 1020.0
+offset_left = 622.0
+offset_right = 1240.0
+offset_bottom = 680.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_fonts/italics_font = SubResource( 3 )
-custom_fonts/bold_font = SubResource( 4 )
-custom_fonts/normal_font = SubResource( 5 )
+theme_override_styles/normal = SubResource("StyleBoxFlat_aqf2u")
 bbcode_enabled = true
-bbcode_text = "[color=#999]Device log...[/color]
-"
 text = "Device log...
 "

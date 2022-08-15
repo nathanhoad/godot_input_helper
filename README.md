@@ -2,7 +2,9 @@
 
 # Godot Input Helper
 
-A simple input helper for the [Godot Engine](https://godotengine.org/).
+A simple input helper for [Godot 4](https://godotengine.org/). 
+
+_If you have Godot 3.x then you need [v2.1.0](https://github.com/nathanhoad/godot_input_helper/releases/tag/v2.1.0)._
 
 Features:
 

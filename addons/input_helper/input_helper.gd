@@ -34,9 +34,9 @@ func _input(event: InputEvent) -> void:
 		next_device_index = event.device
 	
 	# Debounce changes because some gamepads register twice in Windows for some reason
-	var not_changed_just_then = Engine.get_idle_frames() - device_last_changed_at > Engine.get_frames_per_second()
+	var not_changed_just_then = Engine.get_frames_drawn() - device_last_changed_at > Engine.get_frames_per_second()
 	if next_device != device or (next_device_index != device_index and not_changed_just_then):
-		device_last_changed_at = Engine.get_idle_frames()
+		device_last_changed_at = Engine.get_frames_drawn()
 		
 		device = next_device
 		device_index = next_device_index
@@ -74,7 +74,7 @@ func guess_device_name() -> String:
 
 
 func reset_all_actions() -> void:
-	InputMap.load_from_globals()
+	InputMap.load_from_project_settings()
 	for action in InputMap.get_actions():
 		emit_signal("action_button_changed", action, get_action_button(action))
 		emit_signal("action_key_changed", action, get_action_key(action))
@@ -95,7 +95,7 @@ func is_valid_key(key: String) -> bool:
 
 
 func get_action_key(action: String) -> String:
-	for event in InputMap.get_action_list(action):
+	for event in InputMap.action_get_events(action):
 		if event is InputEventKey:
 			return event.as_text()
 	return ""
@@ -109,13 +109,13 @@ func set_action_key(target_action: String, key: String, swap_if_taken: bool = tr
 	var clashing_event
 	if swap_if_taken:
 		for action in InputMap.get_actions():
-			for event in InputMap.get_action_list(action):
+			for event in InputMap.action_get_events(action):
 				if event is InputEventKey and event.as_text() == key:
 					clashing_action = action
 					clashing_event = event
 	
 	# Find the key based event for the target action
-	for event in InputMap.get_action_list(target_action):
+	for event in InputMap.action_get_events(target_action):
 		if event is InputEventKey:
 			# Add the current mapping to the clashing action
 			if clashing_action:
@@ -127,7 +127,7 @@ func set_action_key(target_action: String, key: String, swap_if_taken: bool = tr
 			
 	# Add the new event to the target action
 	var next_event = InputEventKey.new()
-	next_event.scancode = OS.find_scancode_from_string(key)
+	next_event.keycode = OS.find_keycode_from_string(key)
 	InputMap.action_add_event(target_action, next_event)
 	emit_signal("action_key_changed", target_action, next_event.as_text())
 	return OK
@@ -135,7 +135,7 @@ func set_action_key(target_action: String, key: String, swap_if_taken: bool = tr
 
 func get_action_button(action: String) -> int:
 	# Get the first button input
-	for event in InputMap.get_action_list(action):
+	for event in InputMap.action_get_events(action):
 		if event is InputEventJoypadButton:
 			return event.button_index
 	return -1
@@ -147,13 +147,13 @@ func set_action_button(target_action: String, button: int, swap_if_taken: bool =
 	var clashing_event
 	if swap_if_taken:
 		for action in InputMap.get_actions():
-			for event in InputMap.get_action_list(action):
+			for event in InputMap.action_get_events(action):
 				if event is InputEventJoypadButton and event.button_index == button:
 					clashing_action = action
 					clashing_event = event
 	
 	# Find the key based event for the target action
-	for event in InputMap.get_action_list(target_action):
+	for event in InputMap.action_get_events(target_action):
 		if event is InputEventJoypadButton:
 			# Add the current mapping to the clashing action
 			if clashing_action:
