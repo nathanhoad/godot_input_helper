@@ -23,12 +23,12 @@ func _input(event: InputEvent) -> void:
 	var next_device_index: int = device_index
 	
 	# Did we just press a key on the keyboard?
-	if event is InputEventKey and event.is_pressed():
+	if event is InputEventKey:
 		next_device = DEVICE_KEYBOARD
 		next_device_index = -1
 	
 	# Did we just use a gamepad?
-	elif (event is InputEventJoypadButton and event.is_pressed()) \
+	elif event is InputEventJoypadButton \
 		or (event is InputEventJoypadMotion and event.axis_value > 0.1):
 		next_device = get_simplified_device_name(Input.get_joy_name(event.device))
 		next_device_index = event.device
