@@ -13,6 +13,8 @@ const DEVICE_PLAYSTATION_CONTROLLER = "playstation"
 const DEVICE_GENERIC = "generic"
 
 
+var deadzone: float = 0.5
+
 var device: String = DEVICE_GENERIC
 var device_index: int = -1
 var device_last_changed_at: int = 0
@@ -29,7 +31,7 @@ func _input(event: InputEvent) -> void:
 	
 	# Did we just use a gamepad?
 	elif (event is InputEventJoypadButton and event.is_pressed()) \
-		or (event is InputEventJoypadMotion and event.axis_value > 0.1):
+		or (event is InputEventJoypadMotion and event.axis_value > deadzone):
 		next_device = get_simplified_device_name(Input.get_joy_name(event.device))
 		next_device_index = event.device
 	
