@@ -14,7 +14,7 @@ func _ready() -> void:
 
 
 func write_to_log(label: String, device: String, device_index: int) -> void:
-	var color = "#fff"
+	var color = Color.white
 	match device:
 		InputHelper.DEVICE_KEYBOARD:
 			color = Color.yellow
