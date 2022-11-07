@@ -99,7 +99,8 @@ func is_valid_key(key: String) -> bool:
 func get_action_key(action: String) -> String:
 	for event in InputMap.get_action_list(action):
 		if event is InputEventKey:
-			return event.as_text()
+			var scancode = event.physical_scancode if event.physical_scancode != 0 else event.scancode
+			return OS.get_scancode_string(scancode)
 	return ""
 
 
