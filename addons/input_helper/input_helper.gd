@@ -99,7 +99,7 @@ func is_valid_key(key: String) -> bool:
 func get_action_key(action: String) -> String:
 	for event in InputMap.action_get_events(action):
 		if event is InputEventKey:
-			return event.as_text()
+			return OS.get_keycode_string(event.physical_keycode)
 	return ""
 
 
@@ -112,7 +112,7 @@ func set_action_key(target_action: String, key: String, swap_if_taken: bool = tr
 	if swap_if_taken:
 		for action in InputMap.get_actions():
 			for event in InputMap.action_get_events(action):
-				if event is InputEventKey and event.as_text() == key:
+				if event is InputEventKey and OS.get_keycode_string(event.physical_keycode) == key:
 					clashing_action = action
 					clashing_event = event
 	
@@ -123,7 +123,7 @@ func set_action_key(target_action: String, key: String, swap_if_taken: bool = tr
 			if clashing_action:
 				InputMap.action_erase_event(clashing_action, clashing_event)
 				InputMap.action_add_event(clashing_action, event)
-				emit_signal("action_key_changed", clashing_action, event.as_text())
+				emit_signal("action_key_changed", clashing_action, OS.get_keycode_string(event.physical_keycode))
 			# Remove the current mapping
 			InputMap.action_erase_event(target_action, event)
 			
@@ -131,7 +131,7 @@ func set_action_key(target_action: String, key: String, swap_if_taken: bool = tr
 	var next_event = InputEventKey.new()
 	next_event.keycode = OS.find_keycode_from_string(key)
 	InputMap.action_add_event(target_action, next_event)
-	emit_signal("action_key_changed", target_action, next_event.as_text())
+	emit_signal("action_key_changed", target_action, OS.get_keycode_string(next_event.physical_keycode))
 	return OK
 
 
