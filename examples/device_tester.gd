@@ -22,7 +22,9 @@ func write_to_log(label: String, device: String, device_index: int) -> void:
 			color = Color.GREEN
 		InputHelper.DEVICE_PLAYSTATION_CONTROLLER:
 			color = Color.BLUE
-		InputHelper.DEVICE_SWITCH_CONTROLLER:
+		InputHelper.DEVICE_SWITCH_CONTROLLER, \
+		InputHelper.DEVICE_SWITCH_JOYCON_LEFT_CONTROLLER, \
+		InputHelper.DEVICE_SWITCH_JOYCON_RIGHT_CONTROLLER:
 			color = Color.RED
 	
 	if device_index > -1:

@@ -1,38 +1,29 @@
 [gd_scene load_steps=2 format=3 uid="uid://b378l5l1leca3"]
 
-[ext_resource type="Script" path="res://addons/input_helper/examples/remap.gd" id="1"]
+[ext_resource type="Script" path="res://examples/remap.gd" id="1_tju27"]
 
 [node name="Remap" type="CenterContainer"]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-script = ExtResource("1")
+script = ExtResource("1_tju27")
 
 [node name="PressAKeyLabel" type="Label" parent="."]
-offset_left = 590.0
-offset_top = 347.0
-offset_right = 690.0
-offset_bottom = 373.0
+layout_mode = 2
 size_flags_horizontal = 3
 text = "Press a key..."
 
 [node name="VBox" type="HBoxContainer" parent="."]
-offset_left = 508.0
-offset_top = 344.0
-offset_right = 771.0
-offset_bottom = 375.0
+layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="CurrentKeyLabel" type="Label" parent="VBox"]
-offset_top = 2.0
-offset_right = 179.0
-offset_bottom = 28.0
+layout_mode = 2
 size_flags_horizontal = 3
 text = "ui_accept is currently A"
 
 [node name="Button" type="Button" parent="VBox"]
-offset_left = 183.0
-offset_right = 263.0
-offset_bottom = 31.0
+layout_mode = 2
 text = "Change..."
 
 [connection signal="pressed" from="VBox/Button" to="." method="_on_Button_pressed"]

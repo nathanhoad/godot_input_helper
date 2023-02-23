@@ -10,6 +10,8 @@ signal gamepad_changed(device_index: int, is_connected: bool)
 const DEVICE_KEYBOARD = "keyboard"
 const DEVICE_XBOX_CONTROLLER = "xbox"
 const DEVICE_SWITCH_CONTROLLER = "switch"
+const DEVICE_SWITCH_JOYCON_LEFT_CONTROLLER = "switch_left_joycon"
+const DEVICE_SWITCH_JOYCON_RIGHT_CONTROLLER = "switch_right_joycon"
 const DEVICE_PLAYSTATION_CONTROLLER = "playstation"
 const DEVICE_GENERIC = "generic"
 
@@ -61,6 +63,10 @@ func get_simplified_device_name(raw_name: String) -> String:
 		
 		"Switch":
 			return DEVICE_SWITCH_CONTROLLER
+		"Joy-Con (L)":
+			return DEVICE_SWITCH_JOYCON_LEFT_CONTROLLER
+		"Joy-Con (R)":
+			return DEVICE_SWITCH_JOYCON_RIGHT_CONTROLLER
 		
 		_:
 			return DEVICE_GENERIC
@@ -109,13 +115,17 @@ func is_valid_key(key: String) -> bool:
 	if key.length() == 1: return true
 	if key in [
 			"Up", "Down", "Left", "Right", 
+			"QuoteLeft",
 			"Space", "Enter", 
+			"Alt", "Ctrl", "Shift", "Tab",
 			"Comma", "Period", 
 			"Slash", "BackSlash", 
 			"Minus", "Equal", 
 			"Semicolon", "Apostrophe",
-			"BracketLeft", "BracketRight"
+			"BracketLeft", "BracketRight",
+			"BraceLeft", "BraceRight"
 		]: return true
+	
 	return false
 
 

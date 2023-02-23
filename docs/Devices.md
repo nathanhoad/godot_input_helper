@@ -23,3 +23,7 @@ To remap input, have a look at [Input Mapping](./Mapping.md).
 ## Device Tester
 
 Run the `res://addons/input_helper/device_tester/device_tester.tscn` scene to test inputs.
+
+## Switch Joy-Cons on Windows
+
+While Nintendo Switch Joy-Cons do connect to Windows via Bluetooth and do show up as gamepads they don't seem to actually send any input events. They did work in the past so I'm not sure if it's a Windows bug or intentional.
