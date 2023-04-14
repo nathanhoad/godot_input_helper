@@ -13,6 +13,11 @@ func _ready() -> void:
 	InputHelper.device_changed.connect(_on_device_changed)
 
 
+func _input(event: InputEvent) -> void:
+	if not event is InputEventMouse and event.is_pressed():
+		write_to_log("Pressed %s" % event.as_text(), InputHelper.device, InputHelper.device_index)
+
+
 func write_to_log(label: String, device: String, device_index: int) -> void:
 	var color = Color.WHITE
 	match device:
@@ -31,6 +36,8 @@ func write_to_log(label: String, device: String, device_index: int) -> void:
 		logger.append_text("%s: [b][color=#%s]%s[/color][/b] in slot %s\n" % [label, color.to_html(false), device, device_index])
 	else:
 		logger.append_text("%s: [b][color=#%s]%s[/color][/b]\n" % [label, color.to_html(false), device])
+	
+	logger.scroll_to_line(logger.get_line_count())
 
 
 ### Signals

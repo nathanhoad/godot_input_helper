@@ -44,7 +44,7 @@ func _input(event: InputEvent) -> void:
 	
 	# Debounce changes because some gamepads register twice in Windows for some reason
 	var not_changed_just_then = Engine.get_frames_drawn() - device_last_changed_at > Engine.get_frames_per_second()
-	if next_device != device or (next_device_index != device_index and not_changed_just_then):
+	if (next_device != device or next_device_index != device_index) and not_changed_just_then:
 		device_last_changed_at = Engine.get_frames_drawn()
 		
 		device = next_device
@@ -58,7 +58,8 @@ func get_simplified_device_name(raw_name: String) -> String:
 		"XInput Gamepad", "Xbox Series Controller":
 			return DEVICE_XBOX_CONTROLLER
 		
-		"Sony DualSense", "PS5 Controller", "PS4 Controller":
+		"Sony DualSense", "PS5 Controller", "PS4 Controller", \
+		"Nacon Revolution Unlimited Pro Controller":
 			return DEVICE_PLAYSTATION_CONTROLLER
 		
 		"Switch":
