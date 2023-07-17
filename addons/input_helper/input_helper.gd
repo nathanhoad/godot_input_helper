@@ -4,7 +4,7 @@ extends Node
 signal device_changed(device: String, device_index: int)
 signal action_key_changed(action_name: String, key: String)
 signal action_button_changed(action_name: String, button: JoyButton)
-signal action_mouse_changed(action_name: String, button: MouseButton)
+signal action_mouse_button_changed(action_name: String, button: MouseButton)
 signal gamepad_changed(device_index: int, is_connected: bool)
 
 
@@ -118,9 +118,9 @@ func reset_all_actions() -> void:
 		if key != "":
 			action_key_changed.emit(action, key)
 
-		var mouse_button: MouseButton = get_action_mouse(action)
+		var mouse_button: MouseButton = get_action_mouse_button(action)
 		if mouse_button != MOUSE_BUTTON_NONE:
-			action_mouse_changed.emit(action, mouse_button)
+			action_mouse_button_changed.emit(action, mouse_button)
 
 
 func is_valid_key(key: String) -> bool:
@@ -221,7 +221,7 @@ func set_action_button(target_action: String, button: JoyButton, swap_if_taken: 
 	return OK
 
 
-func get_action_mouse(action: String) -> MouseButton:
+func get_action_mouse_button(action: String) -> MouseButton:
 	# Get the first mouse input
 	for event in InputMap.action_get_events(action):
 		if event is InputEventMouseButton:
@@ -229,7 +229,7 @@ func get_action_mouse(action: String) -> MouseButton:
 	return MOUSE_BUTTON_NONE
 
 
-func set_action_mouse(target_action: String, button: MouseButton, swap_if_taken: bool = true) -> Error:
+func set_action_mouse_button(target_action: String, button: MouseButton, swap_if_taken: bool = true) -> Error:
 	# Find any action that is already mapped to this button
 	var clashing_action = ""
 	var clashing_event
@@ -247,7 +247,7 @@ func set_action_mouse(target_action: String, button: MouseButton, swap_if_taken:
 			if clashing_action:
 				InputMap.action_erase_event(clashing_action, clashing_event)
 				InputMap.action_add_event(clashing_action, event)
-				action_mouse_changed.emit(clashing_action, event.button_index)
+				action_mouse_button_changed.emit(clashing_action, event.button_index)
 			# Remove the current mapping
 			InputMap.action_erase_event(target_action, event)
 
@@ -255,7 +255,7 @@ func set_action_mouse(target_action: String, button: MouseButton, swap_if_taken:
 	var next_event = InputEventMouseButton.new()
 	next_event.button_index = button
 	InputMap.action_add_event(target_action, next_event)
-	action_mouse_changed.emit(target_action, next_event.button_index)
+	action_mouse_button_changed.emit(target_action, next_event.button_index)
 	return OK
 
 

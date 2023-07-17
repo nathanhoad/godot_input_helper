@@ -18,17 +18,17 @@ InputHelper provides a few methods for getting and setting actions.
 
   Set the button used for a given action. This emits `action_button_changed(action, button_index)` for the new button (and a separate one if a clashing action was swapped).
 
-- `InputHelper.get_action_mouse(action: String) -> MouseButton`
+- `InputHelper.get_action_mouse_button(action: String) -> MouseButton`
 
   Get the mouse button index used for a given action.
 
-- `InputHelper.set_action_mouse(action: String, button_index: MouseButton) -> void`
+- `InputHelper.set_action_mouse_button(action: String, button_index: MouseButton) -> void`
 
-  Set the mouse button used for a given action. This emits `action_mouse_changed(action, button_index)` for the new button (and a separate one if a clashing action was swapped).
+  Set the mouse button used for a given action. This emits `action_mouse_button_changed(action, button_index)` for the new button (and a separate one if a clashing action was swapped).
 
 - `InputHelper.reset_all_actions() -> void`
 
-  Resets all actions to the game defaults. This will emit `action_button_changed`, `action_key_changed`, `action_mouse_changed` signals for any actions that were reset.
+  Resets all actions to the game defaults. This will emit `action_button_changed`, `action_key_changed`, `action_mouse_button_changed` signals for any actions that were reset.
 
 ## Getting input for mapping
 
@@ -46,5 +46,5 @@ func _unhandled_input(event) -> void:
 
 	if event is InputEventMouseButton and event.is_pressed():
 		accept_event()
-		InputHelper.set_action_mouse(action, event.button_index)
+		InputHelper.set_action_mouse_button(action, event.button_index)
 ```
