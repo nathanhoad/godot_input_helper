@@ -110,8 +110,17 @@ func get_action_key_or_button(action: String) -> String:
 func reset_all_actions() -> void:
 	InputMap.load_from_project_settings()
 	for action in InputMap.get_actions():
-		action_button_changed.emit(action, get_action_button(action))
-		action_key_changed.emit(action, get_action_key(action))
+		var button: JoyButton = get_action_button(action)
+		if button != JOY_BUTTON_INVALID:
+			action_button_changed.emit(action, button)
+
+		var key: String = get_action_key(action)
+		if key != "":
+			action_key_changed.emit(action, key)
+
+		var mouse_button: MouseButton = get_action_mouse(action)
+		if mouse_button != MOUSE_BUTTON_NONE:
+			action_mouse_changed.emit(action, mouse_button)
 
 
 func is_valid_key(key: String) -> bool:

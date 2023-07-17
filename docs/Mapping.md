@@ -4,24 +4,31 @@ InputHelper provides a few methods for getting and setting actions.
 
 - `InputHelper.get_action_key(action: String) -> String`
 
-    Get the key used for a given action.
+  Get the key used for a given action.
 
 - `InputHelper.set_action_key(action: String, key: String, swap_if_taken: bool = true) -> void`
 
-    Set the key used for a given action. This emits `action_key_changed(action, key)` for the new key (and a separate one if a clashing action was swapped).
+  Set the key used for a given action. This emits `action_key_changed(action, key)` for the new key (and a separate one if a clashing action was swapped).
 
-- `InputHelper.get_action_button(action: String) -> int`
+- `InputHelper.get_action_button(action: String) -> JoyButton`
 
-    Get the button index used for a given action.
+  Get the button index used for a given action.
 
-- `InputHelper.set_action_button(action: String, button_index: int) -> void`
+- `InputHelper.set_action_button(action: String, button_index: JoyButton) -> void`
 
-    Set the button used for a given action. This emits `action_button_changed(action, button_index)` for the new button (and a separate one if a clashing action was swapped).
+  Set the button used for a given action. This emits `action_button_changed(action, button_index)` for the new button (and a separate one if a clashing action was swapped).
+
+- `InputHelper.get_action_mouse(action: String) -> MouseButton`
+
+  Get the mouse button index used for a given action.
+
+- `InputHelper.set_action_mouse(action: String, button_index: MouseButton) -> void`
+
+  Set the mouse button used for a given action. This emits `action_mouse_changed(action, button_index)` for the new button (and a separate one if a clashing action was swapped).
 
 - `InputHelper.reset_all_actions() -> void`
 
-    Resets all actions to the game defaults. This will emit `action_button_changed` or `action_key_changed` signals for each of the actions that were reset.
-
+  Resets all actions to the game defaults. This will emit `action_button_changed`, `action_key_changed`, `action_mouse_changed` signals for any actions that were reset.
 
 ## Getting input for mapping
 
@@ -36,4 +43,8 @@ func _unhandled_input(event) -> void:
 	if event is InputEventJoypadButton and event.is_pressed():
 		accept_event()
 		InputHelper.set_action_button(action, event.button_index)
+
+	if event is InputEventMouseButton and event.is_pressed():
+		accept_event()
+		InputHelper.set_action_mouse(action, event.button_index)
 ```
