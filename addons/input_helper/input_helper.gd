@@ -3,7 +3,8 @@ extends Node
 
 signal device_changed(device: String, device_index: int)
 signal action_key_changed(action_name: String, key: String)
-signal action_button_changed(action_name: String, button: int)
+signal action_button_changed(action_name: String, button: JoyButton)
+signal action_mouse_button_changed(action_name: String, button: MouseButton)
 signal gamepad_changed(device_index: int, is_connected: bool)
 
 
@@ -30,23 +31,23 @@ func _ready() -> void:
 func _input(event: InputEvent) -> void:
 	var next_device: String = device
 	var next_device_index: int = device_index
-	
+
 	# Did we just press a key on the keyboard?
 	if event is InputEventKey:
 		next_device = DEVICE_KEYBOARD
 		next_device_index = -1
-	
+
 	# Did we just use a gamepad?
 	elif event is InputEventJoypadButton \
 		or (event is InputEventJoypadMotion and event.axis_value > deadzone):
 		next_device = get_simplified_device_name(Input.get_joy_name(event.device))
 		next_device_index = event.device
-	
+
 	# Debounce changes because some gamepads register twice in Windows for some reason
 	var not_changed_just_then = Engine.get_frames_drawn() - device_last_changed_at > Engine.get_frames_per_second()
 	if (next_device != device or next_device_index != device_index) and not_changed_just_then:
 		device_last_changed_at = Engine.get_frames_drawn()
-		
+
 		device = next_device
 		device_index = next_device_index
 		device_changed.emit(device, device_index)
@@ -58,18 +59,18 @@ func get_simplified_device_name(raw_name: String) -> String:
 		"XInput Gamepad", "Xbox Series Controller", "Xbox 360 Controller", \
 		"Xbox One Controller":
 			return DEVICE_XBOX_CONTROLLER
-		
+
 		"Sony DualSense", "PS5 Controller", "PS4 Controller", \
 		"Nacon Revolution Unlimited Pro Controller":
 			return DEVICE_PLAYSTATION_CONTROLLER
-		
+
 		"Switch":
 			return DEVICE_SWITCH_CONTROLLER
 		"Joy-Con (L)":
 			return DEVICE_SWITCH_JOYCON_LEFT_CONTROLLER
 		"Joy-Con (R)":
 			return DEVICE_SWITCH_JOYCON_RIGHT_CONTROLLER
-		
+
 		_:
 			return DEVICE_GENERIC
 
@@ -109,38 +110,50 @@ func get_action_key_or_button(action: String) -> String:
 func reset_all_actions() -> void:
 	InputMap.load_from_project_settings()
 	for action in InputMap.get_actions():
-		action_button_changed.emit(action, get_action_button(action))
-		action_key_changed.emit(action, get_action_key(action))
+		var button: JoyButton = get_action_button(action)
+		if button != JOY_BUTTON_INVALID:
+			action_button_changed.emit(action, button)
+
+		var key: String = get_action_key(action)
+		if key != "":
+			action_key_changed.emit(action, key)
+
+		var mouse_button: MouseButton = get_action_mouse_button(action)
+		if mouse_button != MOUSE_BUTTON_NONE:
+			action_mouse_button_changed.emit(action, mouse_button)
 
 
 func is_valid_key(key: String) -> bool:
 	if key.length() == 1: return true
 	if key in [
-			"Up", "Down", "Left", "Right", 
+			"Up", "Down", "Left", "Right",
 			"QuoteLeft",
-			"Space", "Enter", 
+			"Space", "Enter",
 			"Alt", "Ctrl", "Shift", "Tab",
-			"Comma", "Period", 
-			"Slash", "BackSlash", 
-			"Minus", "Equal", 
+			"Comma", "Period",
+			"Slash", "BackSlash",
+			"Minus", "Equal",
 			"Semicolon", "Apostrophe",
 			"BracketLeft", "BracketRight",
 			"BraceLeft", "BraceRight"
 		]: return true
-	
+
 	return false
 
 
 func get_action_key(action: String) -> String:
 	for event in InputMap.action_get_events(action):
 		if event is InputEventKey:
-			return OS.get_keycode_string(event.physical_keycode)
+			if OS.get_keycode_string(event.physical_keycode):
+				return OS.get_keycode_string(event.physical_keycode)
+			else:
+				return event.as_text()
 	return ""
 
 
-func set_action_key(target_action: String, key: String, swap_if_taken: bool = true) -> int:
+func set_action_key(target_action: String, key: String, swap_if_taken: bool = true) -> Error:
 	if not is_valid_key(key): return ERR_INVALID_DATA
-	
+
 	# Find any action that is already mapped to this key
 	var clashing_action = ""
 	var clashing_event
@@ -150,7 +163,7 @@ func set_action_key(target_action: String, key: String, swap_if_taken: bool = tr
 				if event is InputEventKey and OS.get_keycode_string(event.physical_keycode) == key:
 					clashing_action = action
 					clashing_event = event
-	
+
 	# Find the key based event for the target action
 	for event in InputMap.action_get_events(target_action):
 		if event is InputEventKey:
@@ -161,7 +174,7 @@ func set_action_key(target_action: String, key: String, swap_if_taken: bool = tr
 				action_key_changed.emit(clashing_action, OS.get_keycode_string(event.physical_keycode))
 			# Remove the current mapping
 			InputMap.action_erase_event(target_action, event)
-			
+
 	# Add the new event to the target action
 	var next_event = InputEventKey.new()
 	next_event.physical_keycode = OS.find_keycode_from_string(key)
@@ -170,16 +183,16 @@ func set_action_key(target_action: String, key: String, swap_if_taken: bool = tr
 	return OK
 
 
-func get_action_button(action: String) -> int:
+func get_action_button(action: String) -> JoyButton:
 	# Get the first button input
 	for event in InputMap.action_get_events(action):
 		if event is InputEventJoypadButton:
 			return event.button_index
-	return -1
+	return JOY_BUTTON_INVALID
 
 
-func set_action_button(target_action: String, button: int, swap_if_taken: bool = true) -> int:
-	# Find any action that is already mapped to this key
+func set_action_button(target_action: String, button: JoyButton, swap_if_taken: bool = true) -> Error:
+	# Find any action that is already mapped to this button
 	var clashing_action = ""
 	var clashing_event
 	if swap_if_taken:
@@ -188,8 +201,8 @@ func set_action_button(target_action: String, button: int, swap_if_taken: bool =
 				if event is InputEventJoypadButton and event.button_index == button:
 					clashing_action = action
 					clashing_event = event
-	
-	# Find the key based event for the target action
+
+	# Find the button based event for the target action
 	for event in InputMap.action_get_events(target_action):
 		if event is InputEventJoypadButton:
 			# Add the current mapping to the clashing action
@@ -199,12 +212,50 @@ func set_action_button(target_action: String, button: int, swap_if_taken: bool =
 				action_button_changed.emit(clashing_action, event.button_index)
 			# Remove the current mapping
 			InputMap.action_erase_event(target_action, event)
-			
+
 	# Add the new event to the target action
 	var next_event = InputEventJoypadButton.new()
 	next_event.button_index = button
 	InputMap.action_add_event(target_action, next_event)
 	action_button_changed.emit(target_action, next_event.button_index)
+	return OK
+
+
+func get_action_mouse_button(action: String) -> MouseButton:
+	# Get the first mouse input
+	for event in InputMap.action_get_events(action):
+		if event is InputEventMouseButton:
+			return event.button_index
+	return MOUSE_BUTTON_NONE
+
+
+func set_action_mouse_button(target_action: String, button: MouseButton, swap_if_taken: bool = true) -> Error:
+	# Find any action that is already mapped to this button
+	var clashing_action = ""
+	var clashing_event
+	if swap_if_taken:
+		for action in InputMap.get_actions():
+			for event in InputMap.action_get_events(action):
+				if event is InputEventMouseButton and event.button_index == button:
+					clashing_action = action
+					clashing_event = event
+
+	# Find the button based event for the target action
+	for event in InputMap.action_get_events(target_action):
+		if event is InputEventMouseButton:
+			# Add the current mapping to the clashing action
+			if clashing_action:
+				InputMap.action_erase_event(clashing_action, clashing_event)
+				InputMap.action_add_event(clashing_action, event)
+				action_mouse_button_changed.emit(clashing_action, event.button_index)
+			# Remove the current mapping
+			InputMap.action_erase_event(target_action, event)
+
+	# Add the new event to the target action
+	var next_event = InputEventMouseButton.new()
+	next_event.button_index = button
+	InputMap.action_add_event(target_action, next_event)
+	action_mouse_button_changed.emit(target_action, next_event.button_index)
 	return OK
 
 
