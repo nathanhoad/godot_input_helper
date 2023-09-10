@@ -39,7 +39,7 @@ func _input(event: InputEvent) -> void:
 
 	# Did we just use a gamepad?
 	elif event is InputEventJoypadButton \
-		or (event is InputEventJoypadMotion and event.axis_value > deadzone):
+		or (event is InputEventJoypadMotion and abs(event.axis_value) > deadzone):
 		next_device = get_simplified_device_name(Input.get_joy_name(event.device))
 		next_device_index = event.device
 
