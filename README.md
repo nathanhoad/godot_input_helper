@@ -1,33 +1,26 @@
 ![Logo](docs/logo.svg)
 
-# Godot Input Helper
+# Godot Input Helper _for Godot 4_
 
-A simple input helper for [Godot 4](https://godotengine.org/). 
+A simple input helper for [Godot 4](https://godotengine.org/). _If you have Godot 3.x then you need [Input Helper v2.x](https://github.com/nathanhoad/godot_input_helper/tree/v2.x)._
 
-_If you have Godot 3.x then you need [Input Helper v2.x](https://github.com/nathanhoad/godot_input_helper/tree/v2.x)._
+You can [download a copy](https://github.com/nathanhoad/godot_input_helper/archive/refs/heads/main.zip) from GitHub.
 
-Features:
+[![Discord](https://img.shields.io/discord/945920743915524176?label=discord&logo=discord&logoColor=%23fff&style=for-the-badge)](https://discord.gg/zwBVQdJchX) [![Patreon](https://img.shields.io/badge/Patreon-Become%20a%20patron-%23f1465a?style=for-the-badge)](https://www.patreon.com/nathanhoad)
+
+## Features
 
 - Detects what input device the player is using
-- Can tell the difference between a few different gamepads
-- Can get and set input action buttons and keys
-- Rumble a gamepad
-
-## Installation
-
-Copy the `addons/input_helper` directory into your `res://addons/input_helper` directory.
-
-Enable `InputHelper` in project plugins.
+- Can tell the difference between a few different joypads
+- Get and set input action buttons and keys
+- Rumble a joypad
 
 ## Documentation
 
 - [Detecting Devices](docs/Devices.md)
 - [Input Mapping](docs/Mapping.md)
-- [Rumbling](docs/Rumbling.md)
-
-## Discord
-
-[![Join the Discord](docs/discord.svg)](https://discord.gg/zwBVQdJchX)
+- [Rumbling the joypad](docs/Rumbling.md)
+- [Updating from Input Helper 3 to 4](3to4.md)
 
 ## More information
 

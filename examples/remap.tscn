@@ -8,22 +8,30 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource("1_tju27")
 
-[node name="PressAKeyLabel" type="Label" parent="."]
+[node name="PressSomething" type="Label" parent="."]
 layout_mode = 2
-size_flags_horizontal = 3
-text = "Press a key..."
+text = "Press a key or mouse button..."
 
 [node name="VBox" type="HBoxContainer" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="CurrentKeyLabel" type="Label" parent="VBox"]
+[node name="Label" type="Label" parent="VBox"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "ui_accept is currently A"
+text = "ui_accept"
 
-[node name="Button" type="Button" parent="VBox"]
+[node name="Spacer" type="Control" parent="VBox"]
+custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
-text = "Change..."
 
-[connection signal="pressed" from="VBox/Button" to="." method="_on_Button_pressed"]
+[node name="Button1" type="Button" parent="VBox"]
+layout_mode = 2
+text = "Input 1"
+
+[node name="Button2" type="Button" parent="VBox"]
+layout_mode = 2
+text = "Input 2"
+
+[connection signal="pressed" from="VBox/Button1" to="." method="_on_button_1_pressed"]
+[connection signal="pressed" from="VBox/Button2" to="." method="_on_button_2_pressed"]
