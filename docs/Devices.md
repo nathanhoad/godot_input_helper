@@ -12,7 +12,7 @@ func _on_input_device_changed(device: String, device_index: int) -> void:
     print("Device index? ", device_index) # Probably 0
 ```
 
-You can also try to guess the controller before any input is registered (thanks [@_was](https://github.com/was-games)):
+You can also try to guess the controller before any input is registered (thanks [@\_was](https://github.com/was-games)):
 
 ```gdscript
 InputHelper.guess_device_name() # Maybe "xbox" if you have an XBox controller plugged in
@@ -26,4 +26,4 @@ Run the `res://addons/input_helper/device_tester/device_tester.tscn` scene to te
 
 ## Switch Joy-Cons on Windows
 
-While Nintendo Switch Joy-Cons do connect to Windows via Bluetooth and do show up as gamepads they don't seem to actually send any input events. They did work in the past so I'm not sure if it's a Windows bug or intentional.
+While Nintendo Switch Joy-Cons do connect to Windows via Bluetooth and do show up as joypads they don't seem to actually send any input events. They did work in the past so I'm not sure if it's a Windows bug or intentional.

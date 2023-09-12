@@ -3,46 +3,59 @@ extends CenterContainer
 
 @export var action_name: String = "ui_accept"
 
-@onready var press_a_key_label := $PressAKeyLabel
+@onready var press_something_label: Label = $PressSomething
 @onready var vbox := $VBox
-@onready var current_key_label := $VBox/CurrentKeyLabel
-@onready var change_button := $VBox/Button
+@onready var change_button_1 := $VBox/Button1
+@onready var change_button_2 := $VBox/Button2
 
-var is_waiting_for_key: bool = false:
-	set(next_is_waiting_for_key):
-		is_waiting_for_key = next_is_waiting_for_key
-		if is_waiting_for_key:
+var changing_input_index: int = false:
+	set(value):
+		changing_input_index = value
+		if changing_input_index > -1:
 			vbox.hide()
-			press_a_key_label.show()
+			press_something_label.show()
 		else:
 			vbox.show()
-			press_a_key_label.hide()
+			press_something_label.hide()
 	get:
-		return is_waiting_for_key
+		return changing_input_index
 
 
 func _ready() -> void:
-	update_label()
-	self.is_waiting_for_key = false
+	self.changing_input_index = -1
+	update_labels()
 
 
 func _unhandled_input(event) -> void:
-	if not is_waiting_for_key: return
-	
-	if event is InputEventKey and event.is_pressed():
+	if changing_input_index == -1: return
+
+	if (event is InputEventKey or event is InputEventMouseButton) and event.is_pressed():
 		accept_event()
-		InputHelper.set_action_key(action_name, event.as_text())
-		self.is_waiting_for_key = false
-		update_label()
+		InputHelper.replace_keyboard_input_at_index(action_name, changing_input_index, event, true)
+		update_labels()
+
+		self.changing_input_index = -1
 
 
-func update_label() -> void:
-	current_key_label.text = "ui_accept is currently %s" % InputHelper.get_action_key(action_name)
-	change_button.grab_focus()
+func update_labels() -> void:
+	var inputs: Array = InputHelper.get_keyboard_inputs_for_action(action_name)
+
+	change_button_1.text = "Change..."
+	change_button_2.text = "Change..."
+
+	if inputs.size() > 0:
+		change_button_1.text = InputHelper.get_label_for_input(inputs[0])
+
+	if inputs.size() > 1:
+		change_button_2.text = InputHelper.get_label_for_input(inputs[1])
 
 
 ### Signals
 
 
-func _on_Button_pressed() -> void:
-	self.is_waiting_for_key = true
+func _on_button_1_pressed() -> void:
+	self.changing_input_index = 0
+
+
+func _on_button_2_pressed() -> void:
+	self.changing_input_index = 1
