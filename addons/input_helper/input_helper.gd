@@ -129,10 +129,12 @@ func get_keyboard_or_joypad_inputs_for_action(action: String) -> Array[InputEven
 ## Get a text label for a given input
 func get_label_for_input(input: InputEvent) -> String:
 	if input is InputEventKey:
-		if OS.get_keycode_string(input.physical_keycode):
-			OS.get_keycode_string(input.physical_keycode)
+		if input.physical_keycode > 0:
+			return input.as_text_physical_keycode()
+		elif input.keycode > 0:
+			return input.as_text_keycode()
 		else:
-			input.as_text()
+			return input.as_text()
 	elif input is InputEventMouseButton:
 		match input.button_index:
 			MOUSE_BUTTON_LEFT:
@@ -226,15 +228,17 @@ func _update_keyboard_input_for_action(action: String, input: InputEvent, swap_i
 
 ## Get all buttons used for an action
 func get_joypad_inputs_for_action(action: String) -> Array[InputEventJoypadButton]:
-	return InputMap.action_get_events(action).filter(func(input):
-		return input is InputEventJoypadButton
-	)
+	var inputs: Array[InputEventJoypadButton]
+	for event in InputMap.action_get_events(action):
+		if event is InputEventJoypadButton:
+			inputs.append(event)
+	return inputs
 
 
 ## Get the first button for an action
 func get_joypad_input_for_action(action: String) -> InputEvent:
 	var buttons: Array[InputEventJoypadButton] = get_joypad_inputs_for_action(action)
-	return JOY_BUTTON_INVALID if buttons.is_empty() else buttons[0]
+	return null if buttons.is_empty() else buttons[0]
 
 
 ## Set the button for an action
@@ -300,7 +304,8 @@ func _update_input_for_action(action: String, input: InputEvent, swap_if_taken: 
 	# Apply the changes
 	InputMap.action_erase_events(action)
 	for event in action_events:
-		InputMap.action_add_event(action, event)
+		if event != null:
+			InputMap.action_add_event(action, event)
 
 	if did_change:
 		did_change_signal.emit(action, input)
