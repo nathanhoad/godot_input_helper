@@ -151,39 +151,6 @@ func get_label_for_input(input: InputEvent) -> String:
 ### Keyboard/mouse input
 
 
-func is_valid_keyboard_input(input: InputEvent) -> bool:
-	if input is InputEventKey:
-		return input.keycode in [
-			KEY_A, KEY_B, KEY_C, KEY_D, KEY_E, KEY_F, KEY_G, KEY_H, KEY_I, KEY_J, KEY_K, KEY_L,
-			KEY_M, KEY_N, KEY_O, KEY_P, KEY_Q, KEY_R, KEY_S, KEY_T, KEY_U, KEY_V, KEY_W, KEY_X,
-			KEY_Y, KEY_Z,
-
-			KEY_0, KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6, KEY_7, KEY_8, KEY_9,
-
-			KEY_KP_0, KEY_KP_1, KEY_KP_2, KEY_KP_3, KEY_KP_4, KEY_KP_5, KEY_KP_6, KEY_KP_7,
-			KEY_KP_8, KEY_KP_9,
-			KEY_KP_ADD, KEY_KP_DIVIDE, KEY_KP_ENTER, KEY_KP_MULTIPLY, KEY_KP_PERIOD,
-			KEY_KP_SUBTRACT,
-
-			KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT,
-			KEY_QUOTELEFT,
-			KEY_SPACE, KEY_ENTER,
-			KEY_ALT, KEY_CTRL, KEY_SHIFT, KEY_TAB,
-			KEY_COMMA, KEY_PERIOD,
-			KEY_SLASH, KEY_BACKSLASH,
-			KEY_MINUS, KEY_EQUAL,
-			KEY_SEMICOLON, KEY_APOSTROPHE,
-			KEY_BRACKETLEFT, KEY_BRACKETRIGHT,
-			KEY_BRACELEFT, KEY_BRACERIGHT,
-			KEY_ESCAPE
-		]
-
-	if input is InputEventMouseButton:
-		return true
-
-	return false
-
-
 ## Get all of the keys/mouse buttons used for an action.
 func get_keyboard_inputs_for_action(action: String) -> Array[InputEvent]:
 	return InputMap.action_get_events(action).filter(func(event):
@@ -215,7 +182,7 @@ func replace_keyboard_input_at_index(action: String, index: int, input: InputEve
 
 
 func _update_keyboard_input_for_action(action: String, input: InputEvent, swap_if_taken: bool, replacing_input: InputEvent = null) -> Error:
-	if not is_valid_keyboard_input(input): return ERR_INVALID_DATA
+	if not (input is InputEventKey or input is InputEventMouseButton): return ERR_INVALID_DATA
 
 	var is_valid_keyboard_event = func(event):
 		return event is InputEventKey or event is InputEventMouseButton
