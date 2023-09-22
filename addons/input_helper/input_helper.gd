@@ -151,10 +151,6 @@ func get_label_for_input(input: InputEvent) -> String:
 ### Keyboard/mouse input
 
 
-func is_valid_keyboard_input(input: InputEvent) -> bool:
-	return input is InputEventKey or input is InputEventMouseButton
-
-
 ## Get all of the keys/mouse buttons used for an action.
 func get_keyboard_inputs_for_action(action: String) -> Array[InputEvent]:
 	return InputMap.action_get_events(action).filter(func(event):
@@ -186,7 +182,7 @@ func replace_keyboard_input_at_index(action: String, index: int, input: InputEve
 
 
 func _update_keyboard_input_for_action(action: String, input: InputEvent, swap_if_taken: bool, replacing_input: InputEvent = null) -> Error:
-	if not is_valid_keyboard_input(input): return ERR_INVALID_DATA
+	if not (input is InputEventKey or input is InputEventMouseButton): return ERR_INVALID_DATA
 
 	var is_valid_keyboard_event = func(event):
 		return event is InputEventKey or event is InputEventMouseButton
