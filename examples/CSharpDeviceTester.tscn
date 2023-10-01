@@ -1,0 +1,61 @@
+[gd_scene load_steps=3 format=3 uid="uid://cb38n4vpxf87i"]
+
+[ext_resource type="Script" path="res://examples/CSharpDeviceTester.cs" id="1_b7uvr"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aqf2u"]
+content_margin_left = 20.0
+content_margin_top = 10.0
+content_margin_right = 20.0
+content_margin_bottom = 10.0
+bg_color = Color(0, 0, 0, 0.501961)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="ControllerTester" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_b7uvr")
+
+[node name="Margin" type="MarginContainer" parent="."]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBox" type="HBoxContainer" parent="Margin"]
+layout_mode = 2
+
+[node name="Center" type="CenterContainer" parent="Margin/VBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBox" type="VBoxContainer" parent="Margin/VBox/Center"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Margin/VBox/Center/VBox"]
+layout_mode = 2
+text = "CURRENT DEVICE"
+
+[node name="CurrentDevice" type="Label" parent="Margin/VBox/Center/VBox"]
+layout_mode = 2
+text = "Keyboard"
+
+[node name="Logger" type="RichTextLabel" parent="Margin/VBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_aqf2u")
+bbcode_enabled = true
+text = "Device log...
+"

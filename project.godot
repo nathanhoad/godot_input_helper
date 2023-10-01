@@ -11,12 +11,16 @@ config_version=5
 [application]
 
 config/name="Input Helper"
-config/features=PackedStringArray("4.1", "Forward Plus")
+config/features=PackedStringArray("4.1", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
 InputHelper="*res://addons/input_helper/input_helper.gd"
+
+[dotnet]
+
+project/assembly_name="Input Helper"
 
 [editor_plugins]
 

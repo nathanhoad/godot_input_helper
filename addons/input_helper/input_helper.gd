@@ -17,13 +17,14 @@ const DEVICE_GENERIC = "generic"
 
 
 @onready var device: String = guess_device_name()
+@onready var device_index: int = 0 if has_joypad() else -1
 
 var deadzone: float = 0.5
-var device_index: int = -1
 var device_last_changed_at: int = 0
 
 
 func _ready() -> void:
+	Engine.register_singleton("InputHelper", self)
 	Input.joy_connection_changed.connect(func(device_index, is_connected): joypad_changed.emit(device_index, is_connected))
 
 
@@ -42,9 +43,9 @@ func _input(event: InputEvent) -> void:
 		next_device = get_simplified_device_name(Input.get_joy_name(event.device))
 		next_device_index = event.device
 
-	# Debounce changes because some joypads register twice in Windows for some reason
-	var not_changed_just_then = Engine.get_frames_drawn() - device_last_changed_at > Engine.get_frames_per_second()
-	if (next_device != device or next_device_index != device_index) and not_changed_just_then:
+	# Debounce changes for 1 second because some joypads register twice in Windows for some reason
+	var not_changed_in_last_second = Engine.get_frames_drawn() - device_last_changed_at > Engine.get_frames_per_second()
+	if (next_device != device or next_device_index != device_index) and not_changed_in_last_second:
 		device_last_changed_at = Engine.get_frames_drawn()
 
 		device = next_device
@@ -128,6 +129,8 @@ func get_keyboard_or_joypad_inputs_for_action(action: String) -> Array[InputEven
 
 ## Get a text label for a given input
 func get_label_for_input(input: InputEvent) -> String:
+	if input == null: return ""
+
 	if input is InputEventKey:
 		if input.physical_keycode > 0:
 			return input.as_text_physical_keycode()
@@ -203,7 +206,7 @@ func get_joypad_inputs_for_action(action: String) -> Array[InputEventJoypadButto
 
 
 ## Get the first button for an action
-func get_joypad_input_for_action(action: String) -> InputEvent:
+func get_joypad_input_for_action(action: String) -> InputEventJoypadButton:
 	var buttons: Array[InputEventJoypadButton] = get_joypad_inputs_for_action(action)
 	return null if buttons.is_empty() else buttons[0]
 

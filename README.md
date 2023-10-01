@@ -20,6 +20,7 @@ You can [download a copy](https://github.com/nathanhoad/godot_input_helper/archi
 - [Detecting Devices](docs/Devices.md)
 - [Input Mapping](docs/Mapping.md)
 - [Rumbling the joypad](docs/Rumbling.md)
+- [C#](docs/CSharp.md)
 - [Updating from Input Helper 3 to 4](3to4.md)
 
 ## More information
