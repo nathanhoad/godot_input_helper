@@ -6,7 +6,7 @@ A simple input helper for [Godot 4](https://godotengine.org/). _If you have Godo
 
 You can [download a copy](https://github.com/nathanhoad/godot_input_helper/archive/refs/heads/main.zip) from GitHub.
 
-[![Discord](https://img.shields.io/discord/945920743915524176?label=discord&logo=discord&logoColor=%23fff&style=for-the-badge)](https://discord.gg/zwBVQdJchX) [![Patreon](https://img.shields.io/badge/Patreon-Become%20a%20patron-%23f1465a?style=for-the-badge)](https://www.patreon.com/nathanhoad)
+[![Patreon](https://img.shields.io/badge/Patreon-Become%20a%20patron-%23f1465a?style=for-the-badge)](https://www.patreon.com/nathanhoad) [![Discord](https://img.shields.io/discord/945920743915524176?label=discord&logo=discord&logoColor=%23fff&style=for-the-badge)](https://discord.gg/zwBVQdJchX)
 
 ## Features
 
@@ -23,10 +23,9 @@ You can [download a copy](https://github.com/nathanhoad/godot_input_helper/archi
 - [C#](docs/CSharp.md)
 - [Updating from Input Helper 3 to 4](3to4.md)
 
-## More information
+## Video overview
 
-[![Watch a video about my input helper addon](docs/detect-input-device.png)](https://youtu.be/Ol95TwAuARs)
-[![Watch a video remapping input](docs/remapping-input.png)](https://youtu.be/KbOW_9zmv3w)
+[![Input helper addon for Godot 4](docs/input-helper-addon-thumb.png)](https://youtu.be/PGy07Q6vHcU)
 
 ## Contributors
 
