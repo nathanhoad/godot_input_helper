@@ -151,6 +151,58 @@ func get_label_for_input(input: InputEvent) -> String:
 	return input.as_text()
 
 
+## Serialize a list of action inputs to string
+func serialize_inputs_for_actions(actions: PackedStringArray = []) -> String:
+	if actions == null or actions.size() == 0:
+		actions = InputMap.get_actions()
+
+	var map: Dictionary = {}
+	for action in actions:
+		var inputs: Array[InputEvent] = InputMap.action_get_events(action)
+		var action_map: Dictionary = {
+			"keyboard": [],
+			"mouse": [],
+			"joypad": []
+		}
+		for input in inputs:
+			if input is InputEventKey:
+				var s: String = OS.get_keycode_string(input.keycode)
+				if s == "":
+					s = OS.get_keycode_string(input.physical_keycode)
+				action_map["keyboard"].append(s)
+			elif input is InputEventMouseButton:
+				action_map["mouse"].append(input.button_index)
+			elif input is InputEventJoypadButton:
+				action_map["joypad"].append(input.button_index)
+
+		map[action] = action_map
+
+	return JSON.stringify(map)
+
+
+## Load inputs from a serialized string.
+func deserialize_inputs_for_actions(string: String) -> void:
+	var map: Dictionary = JSON.parse_string(string)
+
+	for action in map.keys():
+		InputMap.action_erase_events(action)
+
+		for key in map[action]["keyboard"]:
+			var keyboard_input = InputEventKey.new()
+			keyboard_input.keycode = OS.find_keycode_from_string(key)
+			InputMap.action_add_event(action, keyboard_input)
+
+		for button_index in map[action]["mouse"]:
+			var mouse_input = InputEventMouseButton.new()
+			mouse_input.button_index = int(button_index)
+			InputMap.action_add_event(action, mouse_input)
+
+		for button_index in map[action]["joypad"]:
+			var joypad_input = InputEventJoypadButton.new()
+			joypad_input.button_index = int(button_index)
+			InputMap.action_add_event(action, joypad_input)
+
+
 ### Keyboard/mouse input
 
 
