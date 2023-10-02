@@ -82,6 +82,18 @@ namespace NathanHoad
     }
 
 
+    public static string SerializeInputsForActions(Array<string> actions = null)
+    {
+      return (string)Instance.Call("serialize_inputs_for_actions", actions);
+    }
+
+
+    public static void DeserializeInputsForActions(string serializedInputs)
+    {
+      Instance.Call("deserialize_inputs_for_actions", serializedInputs);
+    }
+
+
     #region Keyboard/Mouse
 
     public static Array<InputEvent> GetKeyboardInputsForAction(string action)
