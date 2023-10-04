@@ -1,6 +1,6 @@
 ![Logo](docs/logo.svg)
 
-# Godot Input Helper _for Godot 4_
+# Input Helper _for Godot 4_
 
 A simple input helper for [Godot 4](https://godotengine.org/). _If you have Godot 3.x then you need [Input Helper v2.x](https://github.com/nathanhoad/godot_input_helper/tree/v2.x)._
 
