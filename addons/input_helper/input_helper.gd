@@ -116,7 +116,7 @@ func get_keyboard_or_joypad_input_for_action(action: String) -> InputEvent:
 	if device == DEVICE_KEYBOARD:
 		return get_keyboard_input_for_action(action)
 	else:
-		return get_joypad_input_for_action(action)
+		return get_joypad_input_for_action(action) as InputEvent
 
 
 ## Get the key or button for a given action depending on the current device
@@ -124,7 +124,10 @@ func get_keyboard_or_joypad_inputs_for_action(action: String) -> Array[InputEven
 	if device == DEVICE_KEYBOARD:
 		return get_keyboard_inputs_for_action(action)
 	else:
-		return get_joypad_inputs_for_action(action) as Array[InputEvent]
+		var inputs: Array[InputEvent] = []
+		for input in get_joypad_inputs_for_action(action):
+			inputs.append(input as InputEvent)
+		return inputs
 
 
 ## Get a text label for a given input
