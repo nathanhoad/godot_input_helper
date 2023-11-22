@@ -136,9 +136,10 @@ func get_label_for_input(input: InputEvent) -> String:
 
 	if input is InputEventKey:
 		if input.physical_keycode > 0:
-			return input.as_text_physical_keycode()
+			var keycode := DisplayServer.keyboard_get_keycode_from_physical(input.physical_keycode)
+			return OS.get_keycode_string(keycode)
 		elif input.keycode > 0:
-			return input.as_text_keycode()
+			return OS.get_keycode_string(input.keycode)
 		else:
 			return input.as_text()
 	elif input is InputEventMouseButton:
