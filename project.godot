@@ -12,6 +12,7 @@ config_version=5
 
 config/name="Input Helper"
 config/features=PackedStringArray("4.1", "C#", "Forward Plus")
+run/main_scene="res://tests/tests.tscn"
 config/icon="res://icon.svg"
 
 [autoload]
@@ -25,6 +26,13 @@ project/assembly_name="Input Helper"
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/input_helper/plugin.cfg")
+
+[file_customization]
+
+folder_colors={
+"res://examples/": "yellow",
+"res://tests/": "green"
+}
 
 [filesystem]
 
