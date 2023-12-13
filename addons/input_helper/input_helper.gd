@@ -33,7 +33,7 @@ func _input(event: InputEvent) -> void:
 	var next_device_index: int = device_index
 
 	# Did we just press a key on the keyboard?
-	if event is InputEventKey:
+	if event is InputEventKey or event is InputEventMouse:
 		next_device = DEVICE_KEYBOARD
 		next_device_index = -1
 
