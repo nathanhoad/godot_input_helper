@@ -15,6 +15,10 @@ const DEVICE_SWITCH_JOYCON_RIGHT_CONTROLLER = "switch_right_joycon"
 const DEVICE_PLAYSTATION_CONTROLLER = "playstation"
 const DEVICE_GENERIC = "generic"
 
+const XBOX_BUTTON_LABELS = ["A", "B", "X", "Y", "Back", "Home", "Menu", "Left Stick", "Right Stick", "Left Shoulder", "Right Shoulder", "Up", "Down", "Left", "Right", "Share"]
+const SWITCH_BUTTON_LABELS = ["B", "A", "Y", "X", "-", "", "+", "Left Stick", "Right Stick", "Left Shoulder", "Right Shoulder", "Up", "Down", "Left", "Right", "Capture"]
+const PLAYSTATION_BUTTON_LABELS = ["Cross", "Circle", "Square", "Triangle", "Select", "PS", "Options", "L3", "R3", "L1", "R1", "Up", "Down", "Left", "Right", "Microphone"]
+
 
 @onready var device: String = guess_device_name()
 @onready var device_index: int = 0 if has_joypad() else -1
@@ -33,7 +37,7 @@ func _input(event: InputEvent) -> void:
 	var next_device_index: int = device_index
 
 	# Did we just press a key on the keyboard?
-	if event is InputEventKey or event is InputEventMouse:
+	if event is InputEventKey or event is InputEventMouseButton:
 		next_device = DEVICE_KEYBOARD
 		next_device_index = -1
 
@@ -139,6 +143,7 @@ func get_label_for_input(input: InputEvent) -> String:
 			return OS.get_keycode_string(input.keycode)
 		else:
 			return input.as_text()
+
 	elif input is InputEventMouseButton:
 		match input.button_index:
 			MOUSE_BUTTON_LEFT:
@@ -148,6 +153,30 @@ func get_label_for_input(input: InputEvent) -> String:
 			MOUSE_BUTTON_RIGHT:
 				return "Mouse Right Button"
 		return "Mouse Button %d" % input
+
+	elif input is InputEventJoypadButton:
+		match device:
+			DEVICE_XBOX_CONTROLLER, DEVICE_GENERIC:
+				return "%s Button" % XBOX_BUTTON_LABELS[input.button_index]
+			DEVICE_SWITCH_CONTROLLER, DEVICE_SWITCH_JOYCON_LEFT_CONTROLLER, DEVICE_SWITCH_JOYCON_RIGHT_CONTROLLER:
+				return "%s Button" % SWITCH_BUTTON_LABELS[input.button_index]
+			DEVICE_PLAYSTATION_CONTROLLER:
+				return "%s Button" % PLAYSTATION_BUTTON_LABELS[input.button_index]
+	elif input is InputEventJoypadMotion:
+		var motion: InputEventJoypadMotion = input as InputEventJoypadMotion
+		match motion.axis:
+			JOY_AXIS_LEFT_X:
+				return "Left Stick %s" % ("Left" if motion.axis_value < 0 else "Right")
+			JOY_AXIS_LEFT_Y:
+				return "Left Stick %s" % ("Up" if motion.axis_value < 0 else "Down")
+			JOY_AXIS_RIGHT_X:
+				return "Right Stick %s" % ("Left" if motion.axis_value < 0 else "Right")
+			JOY_AXIS_RIGHT_Y:
+				return "Right Stick %s" % ("Up" if motion.axis_value < 0 else "Down")
+			JOY_AXIS_TRIGGER_LEFT:
+				return "Left Trigger"
+			JOY_AXIS_TRIGGER_RIGHT:
+				return "Right Trigger"
 
 	return input.as_text()
 
