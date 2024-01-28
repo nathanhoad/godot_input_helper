@@ -1,7 +1,7 @@
 extends CenterContainer
 
 
-@export var action_name: String = "ui_accept"
+@export var action_name: String = &"ui_accept"
 
 @onready var press_something_label: Label = $PressSomething
 @onready var vbox := $VBox
@@ -29,16 +29,24 @@ func _ready() -> void:
 func _unhandled_input(event) -> void:
 	if changing_input_index == -1: return
 
-	if (event is InputEventKey or event is InputEventMouseButton) and event.is_pressed():
-		accept_event()
-		InputHelper.replace_keyboard_input_at_index(action_name, changing_input_index, event, true)
-		update_labels()
+	var did_update: bool = false
 
+	if (event is InputEventKey or event is InputEventMouseButton) and event.is_pressed():
+		InputHelper.replace_keyboard_input_at_index(action_name, changing_input_index, event, true)
+		did_update = true
+
+	elif (event is InputEventJoypadButton or event is InputEventJoypadMotion) and event.is_pressed():
+		InputHelper.replace_joypad_input_at_index(action_name, changing_input_index, event, true)
+		did_update = true
+
+	if did_update:
+		accept_event()
+		update_labels()
 		self.changing_input_index = -1
 
 
 func update_labels() -> void:
-	var inputs: Array = InputHelper.get_keyboard_inputs_for_action(action_name)
+	var inputs: Array = InputHelper.get_keyboard_or_joypad_inputs_for_action(action_name)
 
 	change_button_1.text = "Change..."
 	change_button_2.text = "Change..."

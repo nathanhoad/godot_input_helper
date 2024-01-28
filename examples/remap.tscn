@@ -10,7 +10,7 @@ script = ExtResource("1_tju27")
 
 [node name="PressSomething" type="Label" parent="."]
 layout_mode = 2
-text = "Press a key or mouse button..."
+text = "Press a key, mouse button, or joypad button..."
 
 [node name="VBox" type="HBoxContainer" parent="."]
 layout_mode = 2
