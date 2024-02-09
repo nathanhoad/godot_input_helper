@@ -22,7 +22,7 @@ To remap input, have a look at [Input Mapping](./Mapping.md).
 
 ## Device Tester
 
-Run the `res://addons/input_helper/device_tester/device_tester.tscn` scene to test inputs.
+If you clone the full repository down from GitHub you will have access to the examples folder. In there you can have a look at the device tester examples to test inputs.
 
 ## Switch Joy-Cons on Windows
 
