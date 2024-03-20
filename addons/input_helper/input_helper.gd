@@ -363,7 +363,7 @@ func _update_input_for_action(action: String, input: InputEvent, swap_if_taken: 
 
 	# Find the key based event for the target action
 	var action_events: Array[InputEvent] = InputMap.action_get_events(action)
-	var did_change: bool = false
+	var is_replacing: bool = false
 	for i in range(0, action_events.size()):
 		var event: InputEvent = action_events[i]
 		if check_is_valid.call(event):
@@ -376,11 +376,11 @@ func _update_input_for_action(action: String, input: InputEvent, swap_if_taken: 
 
 			# Replace the event
 			action_events[i] = input
-			did_change = true
+			is_replacing = true
 			break
 
 	# If we were trying to replace something but didn't find it then just add it to the end
-	if not did_change:
+	if not is_replacing:
 		action_events.append(input)
 
 	# Apply the changes
@@ -389,8 +389,7 @@ func _update_input_for_action(action: String, input: InputEvent, swap_if_taken: 
 		if event != null:
 			InputMap.action_add_event(action, event)
 
-	if did_change:
-		did_change_signal.emit(action, input)
+	did_change_signal.emit(action, input)
 
 	return OK
 
