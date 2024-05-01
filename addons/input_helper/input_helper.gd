@@ -336,7 +336,12 @@ func replace_joypad_input_for_action(action: String, current_input: InputEvent, 
 ## Replace a button, given its index
 func replace_joypad_input_at_index(action: String, index: int, input: InputEvent, swap_if_taken: bool = true) -> Error:
 	var inputs: Array[InputEvent] = get_joypad_inputs_for_action(action)
-	var replacing_input = InputEventJoypadButton.new() if (inputs.is_empty() or inputs.size() <= index) else inputs[index]
+	var replacing_input
+	if inputs.is_empty() or inputs.size() <= index:
+		replacing_input = InputEventJoypadButton.new()
+		replacing_input.button_index = JOY_BUTTON_INVALID
+	else:
+		replacing_input = inputs[index]
 	return _update_joypad_input_for_action(action, input, swap_if_taken, replacing_input)
 
 
