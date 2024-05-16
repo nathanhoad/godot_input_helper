@@ -84,6 +84,9 @@ namespace NathanHoad
 
     public static string SerializeInputsForActions(Array<string> actions = null)
     {
+      if (actions == null) {
+        actions = new Array<string>();
+      }
       return (string)Instance.Call("serialize_inputs_for_actions", actions);
     }
 
