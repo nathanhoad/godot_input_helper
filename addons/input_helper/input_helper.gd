@@ -215,7 +215,7 @@ func serialize_inputs_for_actions(actions: PackedStringArray = []) -> String:
 			elif input is InputEventJoypadButton:
 				action_map["joypad"].append(input.button_index)
 			elif input is InputEventJoypadMotion:
-				action_map["joypad"].append("%d|%d" % [input.axis, input.axis_value])
+				action_map["joypad"].append("%d|%f" % [input.axis, input.axis_value])
 
 		map[action] = action_map
 
