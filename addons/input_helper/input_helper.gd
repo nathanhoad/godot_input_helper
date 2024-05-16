@@ -24,6 +24,7 @@ const PLAYSTATION_BUTTON_LABELS = ["Cross", "Circle", "Square", "Triangle", "Sel
 @onready var device_index: int = 0 if has_joypad() else -1
 
 var deadzone: float = 0.5
+var mouse_motion_threshold: int = 100
 var device_last_changed_at: int = 0
 
 
@@ -36,8 +37,10 @@ func _input(event: InputEvent) -> void:
 	var next_device: String = device
 	var next_device_index: int = device_index
 
-	# Did we just press a key on the keyboard?
-	if event is InputEventKey or event is InputEventMouseButton:
+	# Did we just press a key on the keyboard or move the mouse?
+	if event is InputEventKey \
+		or event is InputEventMouseButton \
+		or (event is InputEventMouseMotion and (event as InputEventMouseMotion).relative.length_squared() > mouse_motion_threshold):
 		next_device = DEVICE_KEYBOARD
 		next_device_index = -1
 
