@@ -98,7 +98,8 @@ namespace NathanHoad
 
     public static string SerializeInputsForActions(Array<string> actions = null)
     {
-      if (actions == null) {
+      if (actions == null)
+      {
         actions = new Array<string>();
       }
       return (string)Instance.Call("serialize_inputs_for_actions", actions);
@@ -115,7 +116,7 @@ namespace NathanHoad
 
     public static Array<InputEvent> GetKeyboardInputsForAction(string action)
     {
-      return (Array<InputEvent>)Instance.Call("get_keybaord_inputs_for_action", action);
+      return (Array<InputEvent>)Instance.Call("get_keyboard_inputs_for_action", action);
     }
 
 
