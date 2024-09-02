@@ -155,7 +155,7 @@ func get_label_for_input(input: InputEvent) -> String:
 				return "Mouse Middle Button"
 			MOUSE_BUTTON_RIGHT:
 				return "Mouse Right Button"
-		return "Mouse Button %d" % input
+		return "Mouse Button %d" % input.button_index
 
 	elif input is InputEventJoypadButton:
 		match device:
@@ -165,6 +165,7 @@ func get_label_for_input(input: InputEvent) -> String:
 				return "%s Button" % SWITCH_BUTTON_LABELS[input.button_index]
 			DEVICE_PLAYSTATION_CONTROLLER:
 				return "%s Button" % PLAYSTATION_BUTTON_LABELS[input.button_index]
+
 	elif input is InputEventJoypadMotion:
 		var motion: InputEventJoypadMotion = input as InputEventJoypadMotion
 		match motion.axis:
