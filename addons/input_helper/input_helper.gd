@@ -63,7 +63,7 @@ func _input(event: InputEvent) -> void:
 # Convert a Godot device identifier to a simplified string
 func get_simplified_device_name(raw_name: String) -> String:
 	match raw_name:
-		"XInput Gamepad", "Xbox Series Controller", "Xbox 360 Controller", \
+		"XInput Gamepad", "Xbox Series Controller", "Xbox 360 Controller", "Xbox Wireless Controller", \
 		"Xbox One Controller":
 			return DEVICE_XBOX_CONTROLLER
 
