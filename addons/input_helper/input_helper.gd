@@ -13,6 +13,7 @@ const DEVICE_SWITCH_CONTROLLER = "switch"
 const DEVICE_SWITCH_JOYCON_LEFT_CONTROLLER = "switch_left_joycon"
 const DEVICE_SWITCH_JOYCON_RIGHT_CONTROLLER = "switch_right_joycon"
 const DEVICE_PLAYSTATION_CONTROLLER = "playstation"
+const DEVICE_STEAMDECK_CONTROLLER = "steamdeck"
 const DEVICE_GENERIC = "generic"
 
 const XBOX_BUTTON_LABELS = ["A", "B", "X", "Y", "Back", "Home", "Menu", "Left Stick", "Right Stick", "Left Shoulder", "Right Shoulder", "Up", "Down", "Left", "Right", "Share"]
