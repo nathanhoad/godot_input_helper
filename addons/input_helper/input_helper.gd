@@ -139,8 +139,8 @@ func get_label_for_input(input: InputEvent) -> String:
 	if input == null: return ""
 
 	if input is InputEventKey:
-		if input.physical_keycode > 0:
-			var keycode := DisplayServer.keyboard_get_keycode_from_physical(input.physical_keycode)
+		if input.physical_keycode > 0 and DisplayServer.keyboard_get_current_layout() > -1:
+			var keycode: Key = DisplayServer.keyboard_get_keycode_from_physical(input.physical_keycode)
 			return OS.get_keycode_string(keycode)
 		elif input.keycode > 0:
 			return OS.get_keycode_string(input.keycode)
