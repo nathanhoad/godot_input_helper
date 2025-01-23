@@ -3,7 +3,7 @@ extends Node
 
 signal device_changed(device: String, device_index: int)
 signal keyboard_input_changed(action: String, input: InputEvent)
-signal joypad_input_changed(action: String, input: InputEventJoypadButton)
+signal joypad_input_changed(action: String, input: InputEvent)
 signal joypad_changed(device_index: int, is_connected: bool)
 
 
