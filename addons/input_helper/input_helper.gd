@@ -9,17 +9,31 @@ signal joypad_changed(device_index: int, is_connected: bool)
 
 const DEVICE_KEYBOARD = "keyboard"
 const DEVICE_XBOX_CONTROLLER = "xbox"
+const DEVICE_XBOX_ONE_CONTROLLER = "xbox_one"
+const DEVICE_XBOX_SERIES_CONTROLLER = "xbox_series"
 const DEVICE_SWITCH_CONTROLLER = "switch"
 const DEVICE_SWITCH_JOYCON_LEFT_CONTROLLER = "switch_left_joycon"
 const DEVICE_SWITCH_JOYCON_RIGHT_CONTROLLER = "switch_right_joycon"
-const DEVICE_PLAYSTATION_CONTROLLER = "playstation"
+const DEVICE_PLAYSTATION3_CONTROLLER = "playstation3"
+const DEVICE_PLAYSTATION4_CONTROLLER = "playstation4"
+const DEVICE_PLAYSTATION5_CONTROLLER = "playstation5"
 const DEVICE_STEAMDECK_CONTROLLER = "steamdeck"
 const DEVICE_GENERIC = "generic"
 
-const XBOX_BUTTON_LABELS = ["A", "B", "X", "Y", "Back", "Home", "Menu", "Left Stick", "Right Stick", "Left Shoulder", "Right Shoulder", "Up", "Down", "Left", "Right", "Share"]
-const SWITCH_BUTTON_LABELS = ["B", "A", "Y", "X", "-", "", "+", "Left Stick", "Right Stick", "Left Shoulder", "Right Shoulder", "Up", "Down", "Left", "Right", "Capture"]
-const PLAYSTATION_BUTTON_LABELS = ["Cross", "Circle", "Square", "Triangle", "Select", "PS", "Options", "L3", "R3", "L1", "R1", "Up", "Down", "Left", "Right", "Microphone"]
-const STEAMDECK_BUTTON_LABELS = ["A", "B", "X", "Y", "View", "?", "Options", "Left Stick", "Right Stick", "Left Shoulder", "Right Shoulder", "Up", "Down", "Left", "Right"]
+const XBOX_BUTTON_LABELS = ["A", "B", "X", "Y", "Back", "Guide", "Start", "Left Stick", "Right Stick", "LB", "RB", "Up", "Down", "Left", "Right"]
+const XBOX_ONE_BUTTON_LABELS = ["A", "B", "X", "Y", "View", "Guide", "Menu", "Left Stick", "Right Stick", "LB", "RB", "Up", "Down", "Left", "Right"]
+const XBOX_SERIES_BUTTON_LABELS = ["A", "B", "X", "Y", "View", "Guide", "Menu", "Left Stick", "Right Stick", "LB", "RB", "Up", "Down", "Left", "Right", "Share"]
+# Note: share and home buttons are not recognized
+const SWITCH_BUTTON_LABELS = ["A", "B", "X", "Y", "Minus", "", "Plus", "Left Stick", "Right Stick", "SL", "SR", "Up", "Down", "Left", "Right"]
+# Mapping for left and right joypad connected together (extended gamepad)
+# Left Stick is Axis 0 and 1
+# Right Stick is Axis 2 and 3
+# ZL and ZR are Axis 4 and 5
+const SWITCH_EXTENDED_GAMEPAD_BUTTON_LABELS = ["A", "B", "X", "Y", "Minus", "", "Plus", "Left Stick", "Right Stick", "L", "R", "Up", "Down", "Left", "Right"]
+const PLAYSTATION_3_4_BUTTON_LABELS = ["Cross", "Circle", "Square", "Triangle", "Share", "PS", "Options", "L3", "R3", "L1", "R1", "Up", "Down", "Left", "Right"]
+# Note: Microphone does not work on PC / touchpad is not recognized
+const PLAYSTATION_5_BUTTON_LABELS = ["Cross", "Circle", "Square", "Triangle", "Create", "PS", "Options", "L3", "R3", "L1", "R1", "Up", "Down", "Left", "Right", "Microphone"]
+const STEAMDECK_BUTTON_LABELS = ["A", "B", "X", "Y", "View", "?", "Options", "Left Stick", "Right Stick", "L1", "R1", "Up", "Down", "Left", "Right"]
 
 const SERIAL_VERSION = 1
 
@@ -67,10 +81,14 @@ func _input(event: InputEvent) -> void:
 ## Convert a Godot device identifier to a simplified string
 func get_simplified_device_name(raw_name: String) -> String:
 	var keywords: Dictionary = {
+		DEVICE_XBOX_ONE_CONTROLLER: ["Xbox One Controller"],
+		DEVICE_XBOX_SERIES_CONTROLLER: ["Xbox Series Controller", "Xbox Wireless Controller"],
 		DEVICE_XBOX_CONTROLLER: ["XInput", "XBox"],
-		DEVICE_PLAYSTATION_CONTROLLER: ["Sony", "PS5", "PS4", "Nacon"],
+		DEVICE_PLAYSTATION3_CONTROLLER: ["PS3"],
+		DEVICE_PLAYSTATION4_CONTROLLER:["Nacon Revolution Unlimited Pro Controller", "PS4", "DUALSHOCK 4"],
+		DEVICE_PLAYSTATION5_CONTROLLER:["Sony DualSense", "PS5", "DualSense Wireless Controller"],
 		DEVICE_STEAMDECK_CONTROLLER: ["Steam"],
-		DEVICE_SWITCH_CONTROLLER: ["Switch"],
+		DEVICE_SWITCH_CONTROLLER: ["Switch", "Joy-Con (L/R)"],
 		DEVICE_SWITCH_JOYCON_LEFT_CONTROLLER: ["Joy-Con (L)"],
 		DEVICE_SWITCH_JOYCON_RIGHT_CONTROLLER: ["joy-Con (R)"],
 	}
@@ -161,10 +179,18 @@ func get_label_for_input(input: InputEvent) -> String:
 		match device:
 			DEVICE_XBOX_CONTROLLER, DEVICE_GENERIC:
 				return "%s Button" % XBOX_BUTTON_LABELS[input.button_index]
-			DEVICE_SWITCH_CONTROLLER, DEVICE_SWITCH_JOYCON_LEFT_CONTROLLER, DEVICE_SWITCH_JOYCON_RIGHT_CONTROLLER:
+			DEVICE_XBOX_ONE_CONTROLLER:
+				return "%s Button" % XBOX_ONE_BUTTON_LABELS[input.button_index]
+			DEVICE_XBOX_SERIES_CONTROLLER:
+				return "%s Button" % XBOX_SERIES_BUTTON_LABELS[input.button_index]
+			DEVICE_SWITCH_JOYCON_LEFT_CONTROLLER, DEVICE_SWITCH_JOYCON_RIGHT_CONTROLLER:
 				return "%s Button" % SWITCH_BUTTON_LABELS[input.button_index]
-			DEVICE_PLAYSTATION_CONTROLLER:
-				return "%s Button" % PLAYSTATION_BUTTON_LABELS[input.button_index]
+			DEVICE_SWITCH_CONTROLLER:
+				return "%s Button" % SWITCH_EXTENDED_GAMEPAD_BUTTON_LABELS[input.button_index]
+			DEVICE_PLAYSTATION3_CONTROLLER, DEVICE_PLAYSTATION4_CONTROLLER:
+				return "%s Button" % PLAYSTATION_3_4_BUTTON_LABELS[input.button_index]
+			DEVICE_PLAYSTATION5_CONTROLLER:
+				return "%s Button" % PLAYSTATION_5_BUTTON_LABELS[input.button_index]
 			DEVICE_STEAMDECK_CONTROLLER:
 				return "%s Button" % STEAMDECK_BUTTON_LABELS[input.button_index]
 
