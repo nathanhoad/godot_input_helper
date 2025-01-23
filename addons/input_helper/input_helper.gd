@@ -9,16 +9,18 @@ signal joypad_changed(device_index: int, is_connected: bool)
 
 const DEVICE_KEYBOARD = "keyboard"
 const DEVICE_XBOX_CONTROLLER = "xbox"
-const DEVICE_XBOX_ONE_CONTROLLER = "xbox_one"
-const DEVICE_XBOX_SERIES_CONTROLLER = "xbox_series"
 const DEVICE_SWITCH_CONTROLLER = "switch"
-const DEVICE_SWITCH_JOYCON_LEFT_CONTROLLER = "switch_left_joycon"
-const DEVICE_SWITCH_JOYCON_RIGHT_CONTROLLER = "switch_right_joycon"
-const DEVICE_PLAYSTATION3_CONTROLLER = "playstation3"
-const DEVICE_PLAYSTATION4_CONTROLLER = "playstation4"
-const DEVICE_PLAYSTATION5_CONTROLLER = "playstation5"
+const DEVICE_PLAYSTATION_CONTROLLER = "playstation"
 const DEVICE_STEAMDECK_CONTROLLER = "steamdeck"
 const DEVICE_GENERIC = "generic"
+
+const SUB_DEVICE_XBOX_ONE_CONTROLLER = "xbox_one"
+const SUB_DEVICE_XBOX_SERIES_CONTROLLER = "xbox_series"
+const SUB_DEVICE_PLAYSTATION3_CONTROLLER = "playstation3"
+const SUB_DEVICE_PLAYSTATION4_CONTROLLER = "playstation4"
+const SUB_DEVICE_PLAYSTATION5_CONTROLLER = "playstation5"
+const SUB_DEVICE_SWITCH_JOYCON_LEFT_CONTROLLER = "switch_left_joycon"
+const SUB_DEVICE_SWITCH_JOYCON_RIGHT_CONTROLLER = "switch_right_joycon"
 
 const XBOX_BUTTON_LABELS = ["A", "B", "X", "Y", "Back", "Guide", "Start", "Left Stick", "Right Stick", "LB", "RB", "Up", "Down", "Left", "Right"]
 const XBOX_ONE_BUTTON_LABELS = ["A", "B", "X", "Y", "View", "Guide", "Menu", "Left Stick", "Right Stick", "LB", "RB", "Up", "Down", "Left", "Right"]
@@ -79,19 +81,28 @@ func _input(event: InputEvent) -> void:
 
 
 ## Convert a Godot device identifier to a simplified string
-func get_simplified_device_name(raw_name: String) -> String:
-	var keywords: Dictionary = {
-		DEVICE_XBOX_ONE_CONTROLLER: ["Xbox One Controller"],
-		DEVICE_XBOX_SERIES_CONTROLLER: ["Xbox Series Controller", "Xbox Wireless Controller"],
-		DEVICE_XBOX_CONTROLLER: ["XInput", "XBox"],
-		DEVICE_PLAYSTATION3_CONTROLLER: ["PS3"],
-		DEVICE_PLAYSTATION4_CONTROLLER:["Nacon Revolution Unlimited Pro Controller", "PS4", "DUALSHOCK 4"],
-		DEVICE_PLAYSTATION5_CONTROLLER:["Sony DualSense", "PS5", "DualSense Wireless Controller"],
-		DEVICE_STEAMDECK_CONTROLLER: ["Steam"],
-		DEVICE_SWITCH_CONTROLLER: ["Switch", "Joy-Con (L/R)"],
-		DEVICE_SWITCH_JOYCON_LEFT_CONTROLLER: ["Joy-Con (L)"],
-		DEVICE_SWITCH_JOYCON_RIGHT_CONTROLLER: ["joy-Con (R)"],
-	}
+func get_simplified_device_name(raw_name: String, include_sub_device_name: bool = false) -> String:
+	var keywords: Dictionary
+	if not include_sub_device_name:
+		keywords = {
+			DEVICE_XBOX_CONTROLLER: ["XBox", "XInput"],
+			DEVICE_PLAYSTATION_CONTROLLER: ["Sony", "PS3", "PS5", "PS4", "DUALSHOCK 4", "DualSense", "Nacon Revolution Unlimited Pro Controller"],
+			DEVICE_STEAMDECK_CONTROLLER: ["Steam"],
+			DEVICE_SWITCH_CONTROLLER: ["Switch", "Joy-Con"],
+		}
+	else :
+		keywords = {
+			SUB_DEVICE_XBOX_ONE_CONTROLLER: ["Xbox One Controller"],
+			SUB_DEVICE_XBOX_SERIES_CONTROLLER: ["Xbox Series Controller", "Xbox Wireless Controller"],
+			DEVICE_XBOX_CONTROLLER: ["XInput", "XBox"],
+			SUB_DEVICE_PLAYSTATION3_CONTROLLER: ["PS3"],
+			SUB_DEVICE_PLAYSTATION4_CONTROLLER:["Nacon Revolution Unlimited Pro Controller", "PS4", "DUALSHOCK 4"],
+			SUB_DEVICE_PLAYSTATION5_CONTROLLER:["Sony DualSense", "PS5", "DualSense Wireless Controller"],
+			DEVICE_STEAMDECK_CONTROLLER: ["Steam"],
+			DEVICE_SWITCH_CONTROLLER: ["Switch", "Joy-Con (L/R)"],
+			SUB_DEVICE_SWITCH_JOYCON_LEFT_CONTROLLER: ["Joy-Con (L)"],
+			SUB_DEVICE_SWITCH_JOYCON_RIGHT_CONTROLLER: ["joy-Con (R)"],
+		}
 	for device_key in keywords:
 		for keyword in keywords[device_key]:
 			if keyword.to_lower() in raw_name.to_lower():
@@ -106,9 +117,9 @@ func has_joypad() -> bool:
 
 
 ## Guess the initial input device
-func guess_device_name() -> String:
+func guess_device_name(include_sub_device_name: bool = false) -> String:
 	if has_joypad():
-		return get_simplified_device_name(Input.get_joy_name(0))
+		return get_simplified_device_name(Input.get_joy_name(0), include_sub_device_name)
 	else:
 		return DEVICE_KEYBOARD
 
@@ -179,17 +190,17 @@ func get_label_for_input(input: InputEvent) -> String:
 		match device:
 			DEVICE_XBOX_CONTROLLER, DEVICE_GENERIC:
 				return "%s Button" % XBOX_BUTTON_LABELS[input.button_index]
-			DEVICE_XBOX_ONE_CONTROLLER:
+			SUB_DEVICE_XBOX_ONE_CONTROLLER:
 				return "%s Button" % XBOX_ONE_BUTTON_LABELS[input.button_index]
-			DEVICE_XBOX_SERIES_CONTROLLER:
+			SUB_DEVICE_XBOX_SERIES_CONTROLLER:
 				return "%s Button" % XBOX_SERIES_BUTTON_LABELS[input.button_index]
-			DEVICE_SWITCH_JOYCON_LEFT_CONTROLLER, DEVICE_SWITCH_JOYCON_RIGHT_CONTROLLER:
+			SUB_DEVICE_SWITCH_JOYCON_LEFT_CONTROLLER, SUB_DEVICE_SWITCH_JOYCON_RIGHT_CONTROLLER:
 				return "%s Button" % SWITCH_BUTTON_LABELS[input.button_index]
 			DEVICE_SWITCH_CONTROLLER:
 				return "%s Button" % SWITCH_EXTENDED_GAMEPAD_BUTTON_LABELS[input.button_index]
-			DEVICE_PLAYSTATION3_CONTROLLER, DEVICE_PLAYSTATION4_CONTROLLER:
+			SUB_DEVICE_PLAYSTATION3_CONTROLLER, SUB_DEVICE_PLAYSTATION4_CONTROLLER:
 				return "%s Button" % PLAYSTATION_3_4_BUTTON_LABELS[input.button_index]
-			DEVICE_PLAYSTATION5_CONTROLLER:
+			SUB_DEVICE_PLAYSTATION5_CONTROLLER:
 				return "%s Button" % PLAYSTATION_5_BUTTON_LABELS[input.button_index]
 			DEVICE_STEAMDECK_CONTROLLER:
 				return "%s Button" % STEAMDECK_BUTTON_LABELS[input.button_index]

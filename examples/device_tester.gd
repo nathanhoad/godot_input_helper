@@ -23,17 +23,11 @@ func write_to_log(label: String, device: String, device_index: int, device_input
 	match device:
 		InputHelper.DEVICE_KEYBOARD:
 			color = Color.YELLOW
-		InputHelper.DEVICE_XBOX_CONTROLLER, \
-		InputHelper.DEVICE_XBOX_ONE_CONTROLLER, \
-		InputHelper.DEVICE_XBOX_SERIES_CONTROLLER:
+		InputHelper.DEVICE_XBOX_CONTROLLER:
 			color = Color.GREEN
-		InputHelper.DEVICE_PLAYSTATION3_CONTROLLER, \
-		InputHelper.DEVICE_PLAYSTATION4_CONTROLLER, \
-		InputHelper.DEVICE_PLAYSTATION5_CONTROLLER:
+		InputHelper.DEVICE_PLAYSTATION_CONTROLLER:
 			color = Color.BLUE
-		InputHelper.DEVICE_SWITCH_CONTROLLER, \
-		InputHelper.DEVICE_SWITCH_JOYCON_LEFT_CONTROLLER, \
-		InputHelper.DEVICE_SWITCH_JOYCON_RIGHT_CONTROLLER:
+		InputHelper.DEVICE_SWITCH_CONTROLLER:
 			color = Color.RED
 		InputHelper.DEVICE_STEAMDECK_CONTROLLER:
 			color = Color.DEEP_PINK
