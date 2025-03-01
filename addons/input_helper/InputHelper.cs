@@ -50,29 +50,53 @@ namespace NathanHoad
     }
 
 
-    public string Device
+    public static string Device
     {
       get => (string)Instance.Get("device");
     }
 
 
-    public float Deadzone
+    public static int DeviceIndex
+    {
+      get => (int)Instance.Get("device_index");
+    }
+
+
+    public static string LastKnownJoypadDevice
+    {
+      get => (string)Instance.Get("last_known_joypad_device");
+    }
+
+
+    public static float Deadzone
     {
       get => (float)Instance.Get("deadzone");
       set => Instance.Set("deadzone", value);
     }
 
 
-    public int MouseMotionThreshold
+    public static int MouseMotionThreshold
     {
       get => (int)Instance.Get("mouse_motion_threshold");
       set => Instance.Set("mouse_motion_threshold", value);
     }
 
 
-    public static string GetSimplifiedDeviceName(string rawName, bool includeSubDeviceName = false)
+    public static string GetSimplifiedDeviceName(string rawName)
     {
-      return (string)Instance.Call("get_simplified_device_name", rawName, includeSubDeviceName);
+      return (string)Instance.Call("get_simplified_device_name", rawName);
+    }
+
+
+    public static string GetDeviceFromEvent(InputEvent @event)
+    {
+      return (string)Instance.Call("get_device_from_event", @event);
+    }
+
+
+    public static int GetDeviceIndexFromEvent(InputEvent @event)
+    {
+      return (int)Instance.Call("get_device_index_from_event", @event);
     }
 
 
@@ -82,9 +106,9 @@ namespace NathanHoad
     }
 
 
-    public static string GuessDeviceName(bool includeSubDeviceName = false)
+    public static string GuessDeviceName()
     {
-      return (string)Instance.Call("guess_device_name", includeSubDeviceName);
+      return (string)Instance.Call("guess_device_name");
     }
 
 

@@ -47,10 +47,24 @@ layout_mode = 2
 text = "CURRENT DEVICE"
 
 [node name="CurrentDevice" type="Label" parent="Margin/VBox/Center/VBox"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Keyboard"
 
+[node name="Control" type="Control" parent="Margin/VBox/Center/VBox"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="Margin/VBox/Center/VBox"]
+layout_mode = 2
+text = "LAST JOYPAD"
+
+[node name="LastJoypad" type="Label" parent="Margin/VBox/Center/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+
 [node name="Logger" type="RichTextLabel" parent="Margin/VBox"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3

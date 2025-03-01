@@ -1,8 +1,9 @@
 extends Control
 
 
-@onready var current_device: Label = $Margin/VBox/Center/VBox/CurrentDevice
-@onready var logger: RichTextLabel = $Margin/VBox/Logger
+@onready var current_device: Label = %CurrentDevice
+@onready var last_joypad: Label = %LastJoypad
+@onready var logger: RichTextLabel = %Logger
 
 
 func _ready() -> void:
@@ -15,7 +16,7 @@ func _ready() -> void:
 
 func _input(event: InputEvent) -> void:
 	if not event is InputEventMouse and event.is_pressed():
-		write_to_log("Pressed %s" % event.as_text(), InputHelper.device, InputHelper.device_index, InputHelper.get_label_for_input(event))
+		write_to_log("Pressed %s" % event.as_text(), InputHelper.get_device_from_event(event), InputHelper.get_device_index_from_event(event), InputHelper.get_label_for_input(event))
 
 
 func write_to_log(label: String, device: String, device_index: int, device_input_button: String= "") -> void:
@@ -31,9 +32,9 @@ func write_to_log(label: String, device: String, device_index: int, device_input
 			color = Color.RED
 		InputHelper.DEVICE_STEAMDECK_CONTROLLER:
 			color = Color.DEEP_PINK
-	
+
 	var print_label = label if device_input_button == "" else "%s (%s)" % [label, device_input_button]
-	
+
 	if device_index > -1:
 		logger.append_text("%s: [b][color=#%s]%s[/color][/b] in slot %s\n" % [print_label, color.to_html(false), device, device_index])
 	else:
@@ -47,4 +48,5 @@ func write_to_log(label: String, device: String, device_index: int, device_input
 
 func _on_device_changed(next_device, index):
 	current_device.text = next_device
+	last_joypad.text = InputHelper.last_known_joypad_device
 	write_to_log("Device changed", next_device, index)
