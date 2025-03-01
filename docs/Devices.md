@@ -18,6 +18,14 @@ You can also try to guess the controller before any input is registered (thanks 
 InputHelper.guess_device_name() # Maybe "xbox" if you have an XBox controller plugged in
 ```
 
+The last known controller is available under `InputHelper.last_known_joypad_device` even if the current `device` changes to "keyboard".
+
+## Granular devicer identifiers
+
+To get more granular names for devices you can enable the "Use granular device identifiers" setting in Project Settings under Input Helper > Devices.
+
+## Remapping
+
 To remap input, have a look at [Input Mapping](./Mapping.md).
 
 ## Device Tester

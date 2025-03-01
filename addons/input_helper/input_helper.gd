@@ -39,8 +39,16 @@ const STEAMDECK_BUTTON_LABELS = ["A", "B", "X", "Y", "View", "?", "Options", "Le
 
 const SERIAL_VERSION = 1
 
+## The deadzone to ignore for joypad motion
 var deadzone: float = 0.5
+## The mouse distance to ignore before movement is assumed
 var mouse_motion_threshold: int = 100
+## The last known joypad device name (or "" if no joypad detected)
+var last_known_joypad_device: String = get_simplified_device_name(Input.get_joy_name(0))
+## The last known joypad index
+var last_known_joypad_index: int = 0 if Input.get_connected_joypads().size() > 0 else -1
+
+## Used internally
 var device_last_changed_at: int = 0
 
 @onready var device: String = guess_device_name()
@@ -50,6 +58,7 @@ var device_last_changed_at: int = 0
 func _ready() -> void:
 	if not Engine.has_singleton("InputHelper"):
 		Engine.register_singleton("InputHelper", self)
+
 	Input.joy_connection_changed.connect(func(device_index, is_connected): joypad_changed.emit(device_index, is_connected))
 
 
@@ -68,7 +77,9 @@ func _input(event: InputEvent) -> void:
 	elif event is InputEventJoypadButton \
 		or (event is InputEventJoypadMotion and abs(event.axis_value) > deadzone):
 		next_device = get_simplified_device_name(Input.get_joy_name(event.device))
+		last_known_joypad_device = next_device
 		next_device_index = event.device
+		last_known_joypad_index = next_device_index
 
 	# Debounce changes for 1 second because some joypads register twice in Windows for some reason
 	var not_changed_in_last_second = Engine.get_frames_drawn() - device_last_changed_at > Engine.get_frames_per_second()
@@ -80,29 +91,44 @@ func _input(event: InputEvent) -> void:
 		device_changed.emit(device, device_index)
 
 
+## Get the device name for an event
+func get_device_from_event(event: InputEvent) -> String:
+	if event is InputEventKey or event is InputEventMouseButton or event is InputEventMouseMotion:
+		return DEVICE_KEYBOARD
+	elif event is InputEventJoypadButton or event is InputEventJoypadMotion:
+		return get_simplified_device_name(Input.get_joy_name(event.device))
+	else:
+		return DEVICE_GENERIC
+
+
+## Get the device name for an event
+func get_device_index_from_event(event: InputEvent) -> int:
+	if event is InputEventJoypadButton or event is InputEventJoypadMotion:
+		return event.device
+	else:
+		return -1
+
+
 ## Convert a Godot device identifier to a simplified string
-func get_simplified_device_name(raw_name: String, include_sub_device_name: bool = false) -> String:
-	var keywords: Dictionary
-	if not include_sub_device_name:
-		keywords = {
-			DEVICE_XBOX_CONTROLLER: ["XBox", "XInput"],
-			DEVICE_PLAYSTATION_CONTROLLER: ["Sony", "PS3", "PS5", "PS4", "DUALSHOCK 4", "DualSense", "Nacon Revolution Unlimited Pro Controller"],
-			DEVICE_STEAMDECK_CONTROLLER: ["Steam"],
-			DEVICE_SWITCH_CONTROLLER: ["Switch", "Joy-Con"],
-		}
-	else :
-		keywords = {
-			SUB_DEVICE_XBOX_ONE_CONTROLLER: ["Xbox One Controller"],
-			SUB_DEVICE_XBOX_SERIES_CONTROLLER: ["Xbox Series Controller", "Xbox Wireless Controller"],
-			DEVICE_XBOX_CONTROLLER: ["XInput", "XBox"],
-			SUB_DEVICE_PLAYSTATION3_CONTROLLER: ["PS3"],
-			SUB_DEVICE_PLAYSTATION4_CONTROLLER:["Nacon Revolution Unlimited Pro Controller", "PS4", "DUALSHOCK 4"],
-			SUB_DEVICE_PLAYSTATION5_CONTROLLER:["Sony DualSense", "PS5", "DualSense Wireless Controller"],
-			DEVICE_STEAMDECK_CONTROLLER: ["Steam"],
-			DEVICE_SWITCH_CONTROLLER: ["Switch", "Joy-Con (L/R)"],
-			SUB_DEVICE_SWITCH_JOYCON_LEFT_CONTROLLER: ["Joy-Con (L)"],
-			SUB_DEVICE_SWITCH_JOYCON_RIGHT_CONTROLLER: ["joy-Con (R)"],
-		}
+func get_simplified_device_name(raw_name: String) -> String:
+	var keywords: Dictionary = {
+		SUB_DEVICE_XBOX_ONE_CONTROLLER: ["Xbox One Controller"],
+		SUB_DEVICE_XBOX_SERIES_CONTROLLER: ["Xbox Series Controller", "Xbox Wireless Controller"],
+		DEVICE_XBOX_CONTROLLER: ["XInput", "XBox"],
+		SUB_DEVICE_PLAYSTATION3_CONTROLLER: ["PS3"],
+		SUB_DEVICE_PLAYSTATION4_CONTROLLER:["Nacon Revolution Unlimited Pro Controller", "PS4", "DUALSHOCK 4"],
+		SUB_DEVICE_PLAYSTATION5_CONTROLLER:["Sony DualSense", "PS5", "DualSense Wireless Controller"],
+		DEVICE_STEAMDECK_CONTROLLER: ["Steam"],
+		DEVICE_SWITCH_CONTROLLER: ["Switch", "Joy-Con (L/R)", "PowerA Core Controller"],
+		SUB_DEVICE_SWITCH_JOYCON_LEFT_CONTROLLER: ["Joy-Con (L)"],
+		SUB_DEVICE_SWITCH_JOYCON_RIGHT_CONTROLLER: ["joy-Con (R)"],
+	} if InputHelperSettings.get_setting(InputHelperSettings.USE_GRANULAR_DEVICE_IDENTIFIERS, false) else {
+		DEVICE_XBOX_CONTROLLER: ["XBox", "XInput"],
+		DEVICE_PLAYSTATION_CONTROLLER: ["Sony", "PS3", "PS5", "PS4", "DUALSHOCK 4", "DualSense", "Nacon Revolution Unlimited Pro Controller"],
+		DEVICE_STEAMDECK_CONTROLLER: ["Steam"],
+		DEVICE_SWITCH_CONTROLLER: ["Switch", "Joy-Con", "PowerA Core Controller"],
+	}
+
 	for device_key in keywords:
 		for keyword in keywords[device_key]:
 			if keyword.to_lower() in raw_name.to_lower():
@@ -117,9 +143,9 @@ func has_joypad() -> bool:
 
 
 ## Guess the initial input device
-func guess_device_name(include_sub_device_name: bool = false) -> String:
+func guess_device_name() -> String:
 	if has_joypad():
-		return get_simplified_device_name(Input.get_joy_name(0), include_sub_device_name)
+		return get_simplified_device_name(Input.get_joy_name(0))
 	else:
 		return DEVICE_KEYBOARD
 
@@ -187,7 +213,7 @@ func get_label_for_input(input: InputEvent) -> String:
 		return "Mouse Button %d" % input.button_index
 
 	elif input is InputEventJoypadButton:
-		match device:
+		match last_known_joypad_device:
 			DEVICE_XBOX_CONTROLLER, DEVICE_GENERIC:
 				return "%s Button" % XBOX_BUTTON_LABELS[input.button_index]
 			SUB_DEVICE_XBOX_ONE_CONTROLLER:

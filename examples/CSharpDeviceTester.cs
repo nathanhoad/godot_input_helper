@@ -4,6 +4,7 @@ using NathanHoad;
 public partial class CSharpDeviceTester : Control
 {
   Label currentDevice;
+  Label lastJoypad;
   RichTextLabel logger;
 
 
@@ -11,8 +12,9 @@ public partial class CSharpDeviceTester : Control
   {
     base._Ready();
 
-    currentDevice = GetNode<Label>("Margin/VBox/Center/VBox/CurrentDevice");
-    logger = GetNode<RichTextLabel>("Margin/VBox/Logger");
+    currentDevice = GetNode<Label>("%CurrentDevice");
+    lastJoypad = GetNode<Label>("%LastJoypad");
+    logger = GetNode<RichTextLabel>("%Logger");
 
     string guessedDeviceName = InputHelper.GuessDeviceName();
     currentDevice.Text = guessedDeviceName;
@@ -21,12 +23,23 @@ public partial class CSharpDeviceTester : Control
     InputHelper.DeviceChanged += (string nextDevice, int index) =>
     {
       currentDevice.Text = nextDevice;
+      lastJoypad.Text = InputHelper.LastKnownJoypadDevice;
       WriteToLog("Device changed", nextDevice, index);
     };
   }
 
+  public override void _Input(InputEvent @event)
+  {
+    base._Input(@event);
 
-  private void WriteToLog(string label, string device, int deviceIndex)
+    if (!(@event is InputEventMouse) && @event.IsPressed())
+    {
+      WriteToLog($"Pressed {@event.AsText()}", InputHelper.GetDeviceFromEvent(@event), InputHelper.GetDeviceIndexFromEvent(@event), InputHelper.GetLabelForInput(@event));
+    }
+  }
+
+
+  private void WriteToLog(string label, string device, int deviceIndex, string deviceInputButton = "")
   {
     Color color = Colors.White;
     switch (device)
@@ -50,13 +63,15 @@ public partial class CSharpDeviceTester : Control
         break;
     }
 
+    string printLabel = deviceInputButton == "" ? label : $"{label} ({deviceInputButton})";
+
     if (deviceIndex < -1)
     {
-      logger.AppendText($"{label}: [b][color=#{color.ToHtml(false)}]{device}[/color][/b] in slot {deviceIndex}\n");
+      logger.AppendText($"{printLabel}: [b][color=#{color.ToHtml(false)}]{device}[/color][/b] in slot {deviceIndex}\n");
     }
     else
     {
-      logger.AppendText($"{label}: [b][color=#{color.ToHtml(false)}]{device}[/color][/b]\n");
+      logger.AppendText($"{printLabel}: [b][color=#{color.ToHtml(false)}]{device}[/color][/b]\n");
     }
 
     logger.ScrollToLine(logger.GetLineCount());
