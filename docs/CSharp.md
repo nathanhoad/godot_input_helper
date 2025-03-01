@@ -16,11 +16,26 @@ string deviceName = InputHelper.GuessDeviceName();
 
 ## Signals
 
-To connect signals you will need to attach them to `InputHelper.Instance`, like this:
+To connect signals you can use event handlers:
 
 ```CSharp
-InputHelper.Instance.Connect("device_changed", Callable.From((string device, int index) =>
+InputHelper.DeviceChanged += (string device, int deviceIndex) =>
 {
-  GD.Print($"Device: {device} (in slot ${index})");
-}));
+  GD.Print($"Device: {device} (in slot ${deviceIndex})");
+};
+
+InputHelper.KeyboardInputChanged += (string action, InputEvent input) =>
+{
+  GD.Print($"Keyboard input for {action} changed.");
+};
+
+InputHelper.JoypadInputChanged += (string action, InputEvent input) =>
+{
+  GD.Print($"Joypad input for {action} changed.");
+};
+
+InputHelper.JoypadChanged += (int deviceIndex, bool isConnected) =>
+{
+  GD.Print($"Joypad in slot {deviceIndex} is ${isConnected ? "connected" : "not connected"}");
+};
 ```

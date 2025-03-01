@@ -18,11 +18,11 @@ public partial class CSharpDeviceTester : Control
     currentDevice.Text = guessedDeviceName;
     WriteToLog("Initial device", guessedDeviceName, 0);
 
-    InputHelper.Instance.Connect("device_changed", Callable.From((string nextDevice, int index) =>
+    InputHelper.DeviceChanged += (string nextDevice, int index) =>
     {
       currentDevice.Text = nextDevice;
       WriteToLog("Device changed", nextDevice, index);
-    }));
+    };
   }
 
 
