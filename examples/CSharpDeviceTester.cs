@@ -44,8 +44,8 @@ public partial class CSharpDeviceTester : Control
         break;
 
       case InputHelper.DEVICE_SWITCH_CONTROLLER:
-      case InputHelper.DEVICE_SWITCH_JOYCON_LEFT_CONTROLLER:
-      case InputHelper.DEVICE_SWITCH_JOYCON_RIGHT_CONTROLLER:
+      case InputHelper.SUB_DEVICE_SWITCH_JOYCON_LEFT_CONTROLLER:
+      case InputHelper.SUB_DEVICE_SWITCH_JOYCON_RIGHT_CONTROLLER:
         color = Colors.Red;
         break;
     }

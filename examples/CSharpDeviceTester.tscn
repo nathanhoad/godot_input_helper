@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cb38n4vpxf87i"]
 
-[ext_resource type="Script" path="res://examples/CSharpDeviceTester.cs" id="1_b7uvr"]
+[ext_resource type="Script" uid="uid://dso7renxm4ool" path="res://examples/CSharpDeviceTester.cs" id="1_b7uvr"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aqf2u"]
 content_margin_left = 20.0
