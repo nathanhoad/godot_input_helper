@@ -5,6 +5,17 @@ namespace NathanHoad
 {
   public partial class InputHelper : Node
   {
+    public delegate void DeviceChangedEventHandler(string device, int deviceIndex);
+    public delegate void KeyboardInputChangedEventHandler(string action, InputEvent input);
+    public delegate void JoypadInputChangedEventHandler(string action, InputEvent input);
+    public delegate void JoypadChangedEventHandler(int deviceIndex, bool isConnected);
+
+    public static DeviceChangedEventHandler? DeviceChanged;
+    public static KeyboardInputChangedEventHandler? KeyboardInputChanged;
+    public static JoypadInputChangedEventHandler? JoypadInputChanged;
+    public static JoypadChangedEventHandler? JoypadChanged;
+
+
     public const string DEVICE_KEYBOARD = "keyboard";
     public const string DEVICE_XBOX_CONTROLLER = "xbox";
     public const string DEVICE_SWITCH_CONTROLLER = "switch";
@@ -29,6 +40,10 @@ namespace NathanHoad
         if (instance == null)
         {
           instance = (Node)Engine.GetSingleton("InputHelper");
+          instance.Connect("device_changed", Callable.From((string device, int deviceIndex) => DeviceChanged?.Invoke(device, deviceIndex)));
+          instance.Connect("keyboard_input_changed", Callable.From((string action, InputEvent input) => KeyboardInputChanged?.Invoke(action, input)));
+          instance.Connect("joypad_input_changed", Callable.From((string action, InputEvent input) => JoypadInputChanged?.Invoke(action, input)));
+          instance.Connect("joypad_changed", Callable.From((int deviceIndex, bool isConnected) => JoypadChanged?.Invoke(deviceIndex, isConnected)));
         }
         return instance;
       }
