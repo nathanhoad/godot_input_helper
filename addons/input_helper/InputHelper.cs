@@ -68,6 +68,12 @@ namespace NathanHoad
     }
 
 
+    public static string LastKnownJoypadIndex
+    {
+      get => (string)Instance.Get("last_known_joypad_index");
+    }
+
+
     public static float Deadzone
     {
       get => (float)Instance.Get("deadzone");
