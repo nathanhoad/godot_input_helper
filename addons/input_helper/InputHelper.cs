@@ -8,10 +8,17 @@ namespace NathanHoad
     public const string DEVICE_KEYBOARD = "keyboard";
     public const string DEVICE_XBOX_CONTROLLER = "xbox";
     public const string DEVICE_SWITCH_CONTROLLER = "switch";
-    public const string DEVICE_SWITCH_JOYCON_LEFT_CONTROLLER = "switch_left_joycon";
-    public const string DEVICE_SWITCH_JOYCON_RIGHT_CONTROLLER = "switch_right_joycon";
     public const string DEVICE_PLAYSTATION_CONTROLLER = "playstation";
+    public const string DEVICE_STEAMDECK_CONTROLLER = "steamdeck";
     public const string DEVICE_GENERIC = "generic";
+
+    public const string SUB_DEVICE_XBOX_ONE_CONTROLLER = "xbox_one";
+    public const string SUB_DEVICE_XBOX_SERIES_CONTROLLER = "xbox_series";
+    public const string SUB_DEVICE_PLAYSTATION3_CONTROLLER = "playstation3";
+    public const string SUB_DEVICE_PLAYSTATION4_CONTROLLER = "playstation4";
+    public const string SUB_DEVICE_PLAYSTATION5_CONTROLLER = "playstation5";
+    public const string SUB_DEVICE_SWITCH_JOYCON_LEFT_CONTROLLER = "switch_left_joycon";
+    public const string SUB_DEVICE_SWITCH_JOYCON_RIGHT_CONTROLLER = "switch_right_joycon";
 
 
     private static Node instance;
@@ -48,9 +55,9 @@ namespace NathanHoad
     }
 
 
-    public static string GetSimplifiedDeviceName()
+    public static string GetSimplifiedDeviceName(string rawName, bool includeSubDeviceName = false)
     {
-      return (string)Instance.Call("get_simplified_device_name");
+      return (string)Instance.Call("get_simplified_device_name", rawName, includeSubDeviceName);
     }
 
 
@@ -60,9 +67,9 @@ namespace NathanHoad
     }
 
 
-    public static string GuessDeviceName()
+    public static string GuessDeviceName(bool includeSubDeviceName = false)
     {
-      return (string)Instance.Call("guess_device_name");
+      return (string)Instance.Call("guess_device_name", includeSubDeviceName);
     }
 
 

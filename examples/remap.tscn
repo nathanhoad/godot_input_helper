@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://b378l5l1leca3"]
 
-[ext_resource type="Script" path="res://examples/remap.gd" id="1_tju27"]
+[ext_resource type="Script" uid="uid://drh7krpanau6j" path="res://examples/remap.gd" id="1_tju27"]
 
 [node name="Remap" type="CenterContainer"]
 anchors_preset = 15
