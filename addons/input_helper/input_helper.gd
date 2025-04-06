@@ -221,23 +221,28 @@ func get_label_for_input(input: InputEvent) -> String:
 		return "Mouse Button %d" % input.button_index
 
 	elif input is InputEventJoypadButton:
+		var labels = []
 		match last_known_joypad_device:
 			DEVICE_XBOX_CONTROLLER, DEVICE_GENERIC:
-				return "%s Button" % XBOX_BUTTON_LABELS[input.button_index]
+				labels = XBOX_BUTTON_LABELS
 			SUB_DEVICE_XBOX_ONE_CONTROLLER:
-				return "%s Button" % XBOX_ONE_BUTTON_LABELS[input.button_index]
+				labels = XBOX_ONE_BUTTON_LABELS
 			SUB_DEVICE_XBOX_SERIES_CONTROLLER:
-				return "%s Button" % XBOX_SERIES_BUTTON_LABELS[input.button_index]
+				labels = XBOX_SERIES_BUTTON_LABELS
 			SUB_DEVICE_SWITCH_JOYCON_LEFT_CONTROLLER, SUB_DEVICE_SWITCH_JOYCON_RIGHT_CONTROLLER:
-				return "%s Button" % SWITCH_BUTTON_LABELS[input.button_index]
+				labels = SWITCH_BUTTON_LABELS
 			DEVICE_SWITCH_CONTROLLER:
-				return "%s Button" % SWITCH_EXTENDED_GAMEPAD_BUTTON_LABELS[input.button_index]
+				labels = SWITCH_EXTENDED_GAMEPAD_BUTTON_LABELS
 			SUB_DEVICE_PLAYSTATION3_CONTROLLER, SUB_DEVICE_PLAYSTATION4_CONTROLLER:
-				return "%s Button" % PLAYSTATION_3_4_BUTTON_LABELS[input.button_index]
+				labels = PLAYSTATION_3_4_BUTTON_LABELS
 			SUB_DEVICE_PLAYSTATION5_CONTROLLER:
-				return "%s Button" % PLAYSTATION_5_BUTTON_LABELS[input.button_index]
+				labels = PLAYSTATION_5_BUTTON_LABELS
 			DEVICE_STEAMDECK_CONTROLLER:
-				return "%s Button" % STEAMDECK_BUTTON_LABELS[input.button_index]
+				labels = STEAMDECK_BUTTON_LABELS
+		if input.button_index < labels.size():
+			return "%s Button" % labels[input.button_index]
+		else:
+			return "Button %d" % input.button_index
 
 	elif input is InputEventJoypadMotion:
 		var motion: InputEventJoypadMotion = input as InputEventJoypadMotion
