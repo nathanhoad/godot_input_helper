@@ -16,9 +16,11 @@ const DEVICE_GENERIC = "generic"
 
 const SUB_DEVICE_XBOX_ONE_CONTROLLER = "xbox_one"
 const SUB_DEVICE_XBOX_SERIES_CONTROLLER = "xbox_series"
+
 const SUB_DEVICE_PLAYSTATION3_CONTROLLER = "playstation3"
 const SUB_DEVICE_PLAYSTATION4_CONTROLLER = "playstation4"
 const SUB_DEVICE_PLAYSTATION5_CONTROLLER = "playstation5"
+
 const SUB_DEVICE_SWITCH_JOYCON_LEFT_CONTROLLER = "switch_left_joycon"
 const SUB_DEVICE_SWITCH_JOYCON_RIGHT_CONTROLLER = "switch_right_joycon"
 
@@ -50,6 +52,7 @@ var last_known_joypad_index: int = 0 if Input.get_connected_joypads().size() > 0
 
 ## Used internally
 var device_last_changed_at: int = 0
+var _last_known_granular_joypad_device: String = get_simplified_device_name(Input.get_joy_name(0), true)
 
 @onready var device: String = guess_device_name()
 @onready var device_index: int = 0 if has_joypad() else -1
@@ -80,6 +83,8 @@ func _input(event: InputEvent) -> void:
 		last_known_joypad_device = next_device
 		next_device_index = event.device
 		last_known_joypad_index = next_device_index
+
+		_last_known_granular_joypad_device = get_simplified_device_name(get_joy_name(event.device), true)
 
 	# Debounce changes for 1 second because some joypads register twice in Windows for some reason
 	var not_changed_in_last_second = Engine.get_frames_drawn() - device_last_changed_at > Engine.get_frames_per_second()
@@ -118,7 +123,9 @@ func get_device_index_from_event(event: InputEvent) -> int:
 
 
 ## Convert a Godot device identifier to a simplified string
-func get_simplified_device_name(raw_name: String) -> String:
+func get_simplified_device_name(raw_name: String, force_granular_identifier: bool = false) -> String:
+	var use_granular_identifier: bool = force_granular_identifier or InputHelperSettings.get_setting(InputHelperSettings.USE_GRANULAR_DEVICE_IDENTIFIERS, false)
+
 	var keywords: Dictionary = {
 		SUB_DEVICE_XBOX_ONE_CONTROLLER: ["Xbox One Controller"],
 		SUB_DEVICE_XBOX_SERIES_CONTROLLER: ["Xbox Series Controller", "Xbox Wireless Controller"],
@@ -130,7 +137,7 @@ func get_simplified_device_name(raw_name: String) -> String:
 		DEVICE_SWITCH_CONTROLLER: ["Switch", "Joy-Con (L/R)", "PowerA Core Controller"],
 		SUB_DEVICE_SWITCH_JOYCON_LEFT_CONTROLLER: ["Joy-Con (L)"],
 		SUB_DEVICE_SWITCH_JOYCON_RIGHT_CONTROLLER: ["joy-Con (R)"],
-	} if InputHelperSettings.get_setting(InputHelperSettings.USE_GRANULAR_DEVICE_IDENTIFIERS, false) else {
+	} if use_granular_identifier else {
 		DEVICE_XBOX_CONTROLLER: ["XBox", "XInput"],
 		DEVICE_PLAYSTATION_CONTROLLER: ["Sony", "PS3", "PS5", "PS4", "DUALSHOCK 4", "DualSense", "Nacon Revolution Unlimited Pro Controller"],
 		DEVICE_STEAMDECK_CONTROLLER: ["Steam"],
@@ -222,7 +229,7 @@ func get_label_for_input(input: InputEvent) -> String:
 
 	elif input is InputEventJoypadButton:
 		var labels = []
-		match last_known_joypad_device:
+		match _last_known_granular_joypad_device:
 			DEVICE_XBOX_CONTROLLER, DEVICE_GENERIC:
 				labels = XBOX_BUTTON_LABELS
 			SUB_DEVICE_XBOX_ONE_CONTROLLER:
@@ -235,7 +242,7 @@ func get_label_for_input(input: InputEvent) -> String:
 				labels = SWITCH_EXTENDED_GAMEPAD_BUTTON_LABELS
 			SUB_DEVICE_PLAYSTATION3_CONTROLLER, SUB_DEVICE_PLAYSTATION4_CONTROLLER:
 				labels = PLAYSTATION_3_4_BUTTON_LABELS
-			SUB_DEVICE_PLAYSTATION5_CONTROLLER:
+			DEVICE_PLAYSTATION_CONTROLLER, SUB_DEVICE_PLAYSTATION5_CONTROLLER:
 				labels = PLAYSTATION_5_BUTTON_LABELS
 			DEVICE_STEAMDECK_CONTROLLER:
 				labels = STEAMDECK_BUTTON_LABELS

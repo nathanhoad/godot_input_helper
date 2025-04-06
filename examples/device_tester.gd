@@ -16,7 +16,7 @@ func _ready() -> void:
 
 func _input(event: InputEvent) -> void:
 	if not event is InputEventMouse and event.is_pressed():
-		write_to_log("Pressed %s" % event.as_text(), InputHelper.get_device_from_event(event), InputHelper.get_device_index_from_event(event), InputHelper.get_label_for_input(event))
+		write_to_log("Pressed %s" % InputHelper.get_label_for_input(event), InputHelper.get_device_from_event(event), InputHelper.get_device_index_from_event(event), InputHelper.get_label_for_input(event))
 
 
 func write_to_log(label: String, device: String, device_index: int, device_input_button: String= "") -> void:
