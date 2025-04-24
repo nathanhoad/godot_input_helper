@@ -148,6 +148,12 @@ namespace NathanHoad
     }
 
 
+    public static string SerializeInputsForAction(string action)
+    {
+      return (string)Instance.Call("serialize_inputs_for_action", action);
+    }
+
+
     public static string SerializeInputsForActions(Array<string> actions = null)
     {
       if (actions == null)
@@ -157,6 +163,11 @@ namespace NathanHoad
       return (string)Instance.Call("serialize_inputs_for_actions", actions);
     }
 
+
+    public static void DeserializeInputsForAction(string action, string serializedInputs)
+    {
+      Instance.Call("desserialize_inputs_for_action", action, serializedInputs);
+    }
 
     public static void DeserializeInputsForActions(string serializedInputs)
     {
