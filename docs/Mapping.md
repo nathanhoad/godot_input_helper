@@ -69,11 +69,19 @@ func _unhandled_input(event) -> void:
 
 ## Saving and loading input
 
-While the actual saving and loading part is up to you to implement for your game, there are two methods that will help.
+While the actual saving and loading part is up to you to implement for your game, there are a few methods that will help.
+
+- `InputHelper.serialize_inputs_for_actions(action: StringName) -> String`
+
+  Gets all the inputs for an action and retuns them as a simple string that can be stored.
 
 - `InputHelper.serialize_inputs_for_actions(actions: PackedStringArray = []) -> String`
 
   Gets all inputs for the given actions list (if left blank it will get _all_ actions in the Input Map) and returns a string that you can save with your game data.
+
+- `InputHelper.deserialize_inputs_for_actions(action: StringName, string: String) -> String`
+
+  Deserializes the inputs from a string and applies them to the given action.
 
 - `InputHelper.deserialize_inputs_for_actions(serialized_string: String) -> void`
 
