@@ -59,6 +59,8 @@ var _last_known_granular_joypad_device: String = get_simplified_device_name(Inpu
 
 
 func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
+
 	if not Engine.has_singleton("InputHelper"):
 		Engine.register_singleton("InputHelper", self)
 
