@@ -3,7 +3,7 @@ using Godot.Collections;
 
 namespace NathanHoad
 {
-  public partial class InputHelper : Node
+  public static class InputHelper
   {
     public delegate void DeviceChangedEventHandler(string device, int deviceIndex);
     public delegate void KeyboardInputChangedEventHandler(string action, InputEvent input);
