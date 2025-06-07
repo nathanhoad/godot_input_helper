@@ -24,20 +24,20 @@ const SUB_DEVICE_PLAYSTATION5_CONTROLLER = "playstation5"
 const SUB_DEVICE_SWITCH_JOYCON_LEFT_CONTROLLER = "switch_left_joycon"
 const SUB_DEVICE_SWITCH_JOYCON_RIGHT_CONTROLLER = "switch_right_joycon"
 
-const XBOX_BUTTON_LABELS = ["A", "B", "X", "Y", "Back", "Guide", "Start", "Left Stick", "Right Stick", "LB", "RB", "Up", "Down", "Left", "Right"]
-const XBOX_ONE_BUTTON_LABELS = ["A", "B", "X", "Y", "View", "Guide", "Menu", "Left Stick", "Right Stick", "LB", "RB", "Up", "Down", "Left", "Right"]
-const XBOX_SERIES_BUTTON_LABELS = ["A", "B", "X", "Y", "View", "Guide", "Menu", "Left Stick", "Right Stick", "LB", "RB", "Up", "Down", "Left", "Right", "Share"]
+const XBOX_BUTTON_LABELS = ["A", "B", "X", "Y", "Back", "Guide", "Start", "Left Stick", "Right Stick", "LB", "RB", "Up", "Down", "Left", "Right", "Share", "Paddle 1", "Paddle 2", "Paddle 3", "Paddle 4"]
+const XBOX_ONE_BUTTON_LABELS = ["A", "B", "X", "Y", "View", "Guide", "Menu", "Left Stick", "Right Stick", "LB", "RB", "Up", "Down", "Left", "Right", "Share", "Paddle 1", "Paddle 2", "Paddle 3", "Paddle 4"]
+const XBOX_SERIES_BUTTON_LABELS = ["A", "B", "X", "Y", "View", "Guide", "Menu", "Left Stick", "Right Stick", "LB", "RB", "Up", "Down", "Left", "Right", "Share", "Paddle 1", "Paddle 2", "Paddle 3", "Paddle 4"]
+const STEAMDECK_BUTTON_LABELS = ["A", "B", "X", "Y", "View", "?", "Options", "Left Stick", "Right Stick", "L1", "R1", "Up", "Down", "Left", "Right", "", "", "", "", ""]
 # Note: share and home buttons are not recognized
-const SWITCH_BUTTON_LABELS = ["A", "B", "X", "Y", "Minus", "", "Plus", "Left Stick", "Right Stick", "SL", "SR", "Up", "Down", "Left", "Right"]
+const SWITCH_BUTTON_LABELS = ["B", "A", "Y", "X", "Minus", "", "Plus", "Left Stick", "Right Stick", "LS", "RS", "Up", "Down", "Left", "Right", "Capture"]
 # Mapping for left and right joypad connected together (extended gamepad)
 # Left Stick is Axis 0 and 1
 # Right Stick is Axis 2 and 3
 # ZL and ZR are Axis 4 and 5
-const SWITCH_EXTENDED_GAMEPAD_BUTTON_LABELS = ["A", "B", "X", "Y", "Minus", "", "Plus", "Left Stick", "Right Stick", "L", "R", "Up", "Down", "Left", "Right"]
-const PLAYSTATION_3_4_BUTTON_LABELS = ["Cross", "Circle", "Square", "Triangle", "Share", "PS", "Options", "L3", "R3", "L1", "R1", "Up", "Down", "Left", "Right"]
+const SWITCH_EXTENDED_GAMEPAD_BUTTON_LABELS = ["B", "A", "Y", "X", "Minus", "", "Plus", "Left Stick", "Right Stick", "L", "R", "Up", "Down", "Left", "Right", "Capture"]
+const PLAYSTATION_3_4_BUTTON_LABELS = ["Cross", "Circle", "Square", "Triangle", "Share", "PS", "Options", "L3", "R3", "L1", "R1", "Up", "Down", "Left", "Right", "Microphone", "", "", "", "", "Touchpad"]
 # Note: Microphone does not work on PC / touchpad is not recognized
-const PLAYSTATION_5_BUTTON_LABELS = ["Cross", "Circle", "Square", "Triangle", "Create", "PS", "Options", "L3", "R3", "L1", "R1", "Up", "Down", "Left", "Right", "Microphone"]
-const STEAMDECK_BUTTON_LABELS = ["A", "B", "X", "Y", "View", "?", "Options", "Left Stick", "Right Stick", "L1", "R1", "Up", "Down", "Left", "Right"]
+const PLAYSTATION_5_BUTTON_LABELS = ["Cross", "Circle", "Square", "Triangle", "Create", "PS", "Options", "L3", "R3", "L1", "R1", "Up", "Down", "Left", "Right", "Microphone", "", "", "", "", "Touchpad"]
 
 const SERIAL_VERSION = 1
 
