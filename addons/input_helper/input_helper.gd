@@ -6,6 +6,7 @@ signal keyboard_input_changed(action: String, input: InputEvent)
 signal joypad_input_changed(action: String, input: InputEvent)
 signal joypad_changed(device_index: int, is_connected: bool)
 
+const ALL_DEVICES = -1
 
 const DEVICE_KEYBOARD = "keyboard"
 const DEVICE_XBOX_CONTROLLER = "xbox"
@@ -362,11 +363,13 @@ func deserialize_inputs_for_action(action: String, string: String) -> void:
 					var joypad_bits = input_details.split("|")
 					joypad_motion_input.axis = int(joypad_bits[0])
 					joypad_motion_input.axis_value = float(joypad_bits[1])
+					joypad_motion_input.device = ALL_DEVICES
 					InputMap.action_add_event(action, joypad_motion_input)
 					joypad_input_changed.emit(action, joypad_motion_input)
 				else:
 					var joypad_input = InputEventJoypadButton.new()
 					joypad_input.button_index = int(input_details)
+					joypad_input.device = ALL_DEVICES
 					InputMap.action_add_event(action, joypad_input)
 					joypad_input_changed.emit(action, joypad_input)
 
@@ -513,10 +516,13 @@ func replace_joypad_input_at_index(action: String, index: int, input: InputEvent
 
 ## Set the action used for a button
 func _update_joypad_input_for_action(action: String, input: InputEvent, swap_if_taken: bool = true, replacing_input: InputEvent = null) -> Error:
-	var is_valid_keyboard_event = func(event):
+	# Even though event happened on one device, we need the mapping to work on all devices
+	input.device = ALL_DEVICES
+
+	var is_valid_joypad_event = func(event):
 		return event is InputEventJoypadButton or event is InputEventJoypadMotion
 
-	return _update_input_for_action(action, input, swap_if_taken, replacing_input, is_valid_keyboard_event, joypad_input_changed)
+	return _update_input_for_action(action, input, swap_if_taken, replacing_input, is_valid_joypad_event, joypad_input_changed)
 
 
 func _update_input_for_action(action: String, input: InputEvent, swap_if_taken: bool, replacing_input: InputEvent, check_is_valid: Callable, did_change_signal: Signal) -> Error:
