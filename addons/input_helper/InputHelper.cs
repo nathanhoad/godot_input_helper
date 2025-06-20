@@ -166,7 +166,7 @@ namespace NathanHoad
 
     public static void DeserializeInputsForAction(string action, string serializedInputs)
     {
-      Instance.Call("desserialize_inputs_for_action", action, serializedInputs);
+      Instance.Call("deserialize_inputs_for_action", action, serializedInputs);
     }
 
     public static void DeserializeInputsForActions(string serializedInputs)
