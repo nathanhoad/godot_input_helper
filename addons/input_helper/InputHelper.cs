@@ -88,9 +88,9 @@ namespace NathanHoad
     }
 
 
-    public static string GetSimplifiedDeviceName(string rawName)
+    public static string GetSimplifiedDeviceName(string rawName, bool force_granular_identifier = false)
     {
-      return (string)Instance.Call("get_simplified_device_name", rawName);
+      return (string)Instance.Call("get_simplified_device_name", rawName, force_granular_identifier);
     }
 
 
@@ -130,9 +130,9 @@ namespace NathanHoad
     }
 
 
-    public static InputEvent GetKeyboardOrJoypadInputForAction(string action, InputEvent input, bool swapIfTaken = true)
+    public static InputEvent GetKeyboardOrJoypadInputForAction(string action)
     {
-      return (InputEvent)Instance.Call("get_keyboard_or_joypad_input_for_action", action, input, swapIfTaken);
+      return (InputEvent)Instance.Call("get_keyboard_or_joypad_input_for_action", action);
     }
 
 
@@ -166,7 +166,7 @@ namespace NathanHoad
 
     public static void DeserializeInputsForAction(string action, string serializedInputs)
     {
-      Instance.Call("desserialize_inputs_for_action", action, serializedInputs);
+      Instance.Call("deserialize_inputs_for_action", action, serializedInputs);
     }
 
     public static void DeserializeInputsForActions(string serializedInputs)

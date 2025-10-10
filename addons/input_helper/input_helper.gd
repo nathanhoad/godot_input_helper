@@ -318,9 +318,9 @@ func serialize_inputs_for_actions(actions: PackedStringArray = []) -> String:
 
 
 ## Deserialize a single action's inputs.
-func deserialize_inputs_for_action(action: String, string: String) -> void:
+func deserialize_inputs_for_action(action: String, serialized_inputs: String) -> void:
 	InputMap.action_erase_events(action)
-	var action_inputs: PackedStringArray = string.split(";")
+	var action_inputs: PackedStringArray = serialized_inputs.split(";")
 	for action_input in action_inputs:
 		var bits: PackedStringArray = action_input.split(":")
 
@@ -372,12 +372,12 @@ func deserialize_inputs_for_action(action: String, string: String) -> void:
 
 
 ## Deserialise a list of actions' inputs.
-func deserialize_inputs_for_actions(string: String) -> void:
-	var data: Dictionary = JSON.parse_string(string)
+func deserialize_inputs_for_actions(serialized_inputs: String) -> void:
+	var data: Dictionary = JSON.parse_string(serialized_inputs)
 
 	# Use legacy deserialization
 	if not data.has("version"):
-		_deprecated_deserialize_inputs_for_actions(string)
+		_deprecated_deserialize_inputs_for_actions(serialized_inputs)
 		return
 
 	# Version 1
