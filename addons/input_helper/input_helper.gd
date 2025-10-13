@@ -46,7 +46,7 @@ var deadzone: float = 0.5
 ## The mouse distance to ignore before movement is assumed
 var mouse_motion_threshold: int = 100
 ## The last known joypad device name (or "" if no joypad detected)
-var last_known_joypad_device: String = get_simplified_device_name(Input.get_joy_name(0))
+var last_known_joypad_device: String = get_simplified_device_name(Input.get_joy_name(0)) if Input.get_connected_joypads().size() > 0 else ""
 ## The last known joypad index
 var last_known_joypad_index: int = 0 if Input.get_connected_joypads().size() > 0 else -1
 
