@@ -5,6 +5,15 @@ signal device_changed(device: String, device_index: int)
 signal keyboard_input_changed(action: String, input: InputEvent)
 signal joypad_input_changed(action: String, input: InputEvent)
 signal joypad_changed(device_index: int, is_connected: bool)
+## Emitted the first time in this session that the player touches the screen,
+## which confirms that the device has a touchscreen.
+signal touchscreen_detected()
+## Emitted the first time in this session that the player presses a key, which
+## confirms that the device has a keyboard.
+signal keyboard_detected()
+## Emitted the first time in this session that the player uses a joypad, which
+## confirms that the device has a joypad.
+signal joypad_detected()
 
 
 const DEVICE_KEYBOARD = "keyboard"
@@ -50,6 +59,13 @@ var last_known_joypad_device: String = get_simplified_device_name(Input.get_joy_
 ## The last known joypad index
 var last_known_joypad_index: int = 0 if Input.get_connected_joypads().size() > 0 else -1
 
+## True once the player has touched the screen in this session.
+var has_detected_touchscreen: bool = false
+## True once the player has pressed a key in this session.
+var has_detected_keyboard: bool = false
+## True once the player has used a joypad in this session.
+var has_detected_joypad: bool = false
+
 ## Used internally
 var device_last_changed_at: int = 0
 var _last_known_granular_joypad_device: String = get_simplified_device_name(Input.get_joy_name(0), true)
@@ -68,6 +84,8 @@ func _ready() -> void:
 
 
 func _input(event: InputEvent) -> void:
+	_detect_input_devices(event)
+
 	var next_device: String = device
 	var next_device_index: int = device_index
 
@@ -96,6 +114,24 @@ func _input(event: InputEvent) -> void:
 		device = next_device
 		device_index = next_device_index
 		device_changed.emit(device, device_index)
+
+
+## Detect from the first input of each kind which input devices the player has,
+## because Godot can't list them.
+func _detect_input_devices(event: InputEvent) -> void:
+	if event is InputEventScreenTouch and event.pressed:
+		if not has_detected_touchscreen:
+			has_detected_touchscreen = true
+			touchscreen_detected.emit()
+	elif event is InputEventKey and event.pressed:
+		if not has_detected_keyboard:
+			has_detected_keyboard = true
+			keyboard_detected.emit()
+	elif (event is InputEventJoypadButton and event.pressed) \
+		or (event is InputEventJoypadMotion and abs(event.axis_value) > deadzone):
+		if not has_detected_joypad:
+			has_detected_joypad = true
+			joypad_detected.emit()
 
 
 ## Get the name of a joypad
